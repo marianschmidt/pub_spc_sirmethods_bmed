@@ -1,0 +1,890 @@
+---
+title: "'Histology-specific standardized incidence ratio improves the estimation of second primary lung cancer risk'"
+date: last-modified
+date-format: DD MMMM YYYY
+title-block-banner: true
+toc: true
+authors:
+- name: Marian Eberl
+  address: Chair of Epidemiology, TUM School of Medicine and Health, Technical
+    University of Munich, Munich, Germany
+  email: marian.eberl@tum.de
+- name: Luana F. Tanaka
+  address: Chair of Epidemiology, TUM School of Medicine and Health, Technical
+    University of Munich, Munich, Germany
+- name: Klaus Kraywinkel
+  address: Robert Koch-Institut, Zentrum für Krebsregisterdaten, Berlin
+- name: Stefanie J. Klug
+  address: Chair of Epidemiology, TUM School of Medicine and Health, Technical
+    University of Munich, Munich, Germany
+format:
+ html: 
+    echo: true
+    code-fold: true
+    code-tools: true
+    code-overflow: wrap
+    embed-resources: true
+    df-print: paged
+ docx: 
+    echo: false
+    toc: false
+keywords:
+- lung cancer
+- second primary cancer
+- cancer registry data
+- cancer epidemiology
+- standardized incidence ratio
+number-sections: false
+bibliography: pub_spc_sirmethods.bib
+csl: bmc-medicine.csl
+---
+
+```{r}
+#| label: setup
+#| include: false
+
+#----- Set basic parameters
+
+##---- Files
+here::i_am("4_manuscript/an_article.spc.sirmethods.qmd")
+
+reload_workspace       <- TRUE # if TRUE, the analysis workspace will be
+                              # reloaded, if FALSE, then prep chunk eval = FALSE
+input_dir_tables       <- here::here("3_output/all_figs_tabs")
+input_an_workspace     <- here::here("3_output/x5.10.an_sirmethods.publication2.RData")
+output_dir_tables      <- here::here("3_output")
+
+##---- Packages
+load_packages          <- c("knitr", "gt", "tidyverse", "patchwork")
+add_required_packages  <- c("here", "testthat", "gtExtras", "ggblanket", "svglite") 
+
+### Check if required packages are installed
+invisible(find.package(c(load_packages, add_required_packages)))
+#if the above fails, run 
+#renv::install(c("here", "testthat", "patchwork", "svglite", "gtExtras", "ggblanket"))
+
+### Load packages
+invisible(lapply(load_packages, library, character.only = TRUE))
+
+
+
+
+##---- Options
+### Set global options
+options(nwarnings = 10000)
+testthat::local_edition(3)
+
+### Other parameters
+en_gb <- FALSE        #if true, use British English where applicable
+ref_iarc_def   <- "7"   #number of reference for IARC Working Group 2005 to manually add to gt table
+ref_seer_def   <- "8"   #number of reference for Johnson 2008
+ref_barclay    <- "5"   #number of reference for Barclay 2019
+ref_fritz_iarc <- "17"  #number of reference for Fritz 2013 (IARC ICD-O-3, rev 1)
+alpha          <- 0.05         #standard alpha error used for manual CI calculations
+
+```
+
+```{r}
+#| label: prep-workspace
+#| include: false
+
+### Load workspace if needed
+if(reload_workspace){lapply(input_an_workspace, load, environment())}
+
+```
+
+```{r}
+#| label: prep-color
+#| eval: false
+#| echo: false
+
+##---- Color Palettes
+
+#for color selection
+#c4a_gui()
+#colorspace::hcl_palettes(plot = TRUE)
+
+c4a("wes.zissou1", 11)
+ [1] "#3B9AB2" "#53A5B9" "#6BB1C1" "#8FBBA5" "#BDC367" "#EBCC2A" "#E6C019" "#E3B408" "#E49100" "#EB5500" "#F21A00"
+
+> c4a("hcl.yellow_purple", 11)
+ [1] "#F5F2D8" "#DDEDC4" "#B9E5B9" "#8DDAB7" "#5ECBBB" "#34B8C0" "#31A0C2" "#5384BE" "#7262B2" "#833C97" "#80146E"
+```
+
+```{r}
+#| label: prep-dictionary
+#| include: false
+
+dic_tumor      <- if(en_gb){"tumour"}else{"tumor"}
+```
+
+Marian Eberl, MSc, ^a,\*^ Luana F Tanaka, PhD, ^a^ Klaus Kraywinkel, MD, ^b^ Professor Stefanie J Klug, MPH, PhD ^a^
+
+^a^ Chair of Epidemiology, TUM School of Medicine and Health, Technical University of Munich, Georg-Brauchle-Ring 56, 80992 Munich, Germany
+
+^b^ German Centre for Cancer Registry Data, Robert Koch-Institut, Nordufer 20, 13353 Berlin, Germany
+
+\* Corresponding author
+
+# Title
+
+Histology-specific standardized incidence ratio improves the estimation of second primary lung cancer risk
+
+# Journals
+
+-   rejected: Lancet Oncology (IF 51.1, Elsevier, Fees für OA (nicht Pflicht): 6300 USD)
+
+-   rejected: Journal of Clinical Oncology (IF 45.6, ASCO, free after 12 months, fees for OA (nicht Pflicht): 5000 USD, Article Type: Statistics in Oncology 4000 words)
+
+-   rejected: Journal of Hematology & Oncology (IF 28.5, BMC, 4 days, OA für TUM kostenlos)
+
+-   rejected: Journal of Thoracic Oncology (IF 20.1, Elsevier, 7 days, Fees für OA (nicht Pflicht): 4000 USD)
+
+-   BMJ Thorax (IF 10.0, 2 days to first decision, 46 days to decision with reviews, Fees für Open Access (nicht Pflicht): 3090 GBP plus VAT)
+
+-   rejected: Journal of the National Cancer Institute (IF 10.3, Oxford, 3000 words, Fees für OA (nicht Pflicht): 5000 USD)
+
+-   BMC Medicine (IF 9.2, 9 days, SpringerNature, OA für TUM kostenlos)
+
+-   International Journal of Cancer (IF 6.4, Q1 Oncology, Wiley, OA für TUM kostenlos, 5000 words)
+
+-   British Journal of Cancer (If 8.8, 7 days, SpringerNature, OA für TUM kostenlos)
+
+-   BMC Medical Research Methodology (IF 4.60, Q1 Epi, 48 days to decision, SpringerNature, OA für TUM kostenlos)
+
+-   Journal of Cancer Research and Clinical Oncology (IF 3.6, Q1 Medicine, Q2 Oncology, 4 days to first decision, Springer, OA für TUM kostenlos)
+
+-   Lung Cancer (IF 5.3, Elsevier, 21 days, Fees for OA (nicht Pflicht): 3110 EUR)
+
+-   PLOS One (IF 3.8, Q1 Multidisciplinary, 16 days to editorial decision, OA für TUM kostenlos)
+
+### Suggested reviewers
+
+-   Hyuna Sung, PhD: Senior Principal Scientist, Cancer Surveillance Research, American Cancer Society, hyuna.sung\@cancer.org.
+    Hyuna Sung is an experienced cancer epidemiologist with multiple publications in the field of second primary cancer.
+    Her research is positioned to identify emerging cancer trends as well as high-risk populations.
+    She is well experienced in the applied methodology and could provide valuable feedback on the manuscript.
+
+-   Eric Adjei Boakye, PhD, MA: [eadjeiboakye49\@siumed.edu](mailto:eadjeiboakye49@siumed.edu), Assistant Professor, Southern Illinois University School of Medicine, Dr. Boakye is an experienced analyst of cancer registry data and has previously published on risk and burden of second primary malignancy among survivors of smoking-related cancers in the United States
+
+-   Omar M Abdel-Rahman, MD, PhD: [omar.abdelsalam\@ahs.ca](mailto:omar.abdelsalam@ahs.ca), Assistant Professor, University of Alberta Faculty of Medicine & Dentistry, Department of Oncology; Dr. Abdel-Rahman is an experienced oncologist who has previously published subsequent thoracic cancers among patients diagnosed with lung cancer.
+
+-   Antoinette Wozniak, MD: wozniakaj\@upmc.edu, Director, Lung Cancer Disease Unit, University of Pittsburgh School of Medicine, Division of Hematology/Oncology, Dr. Wozniak is an experienced clinical oncologist and with a focus of clinical research in lung cancer, and mesothelioma, Dr. Wozniak also previously collaborated on observational and secondary data analysis focused studies of lung cancer and therefore could review this paper both from a clinical as well as from a methodological perspective.
+
+-   researchers who have previously avoided calculating same-site SIR (e.g., from (1))
+
+-   suggested reviewers from paper 1
+
+-   someone from IARC who is interested in updating IARC MP rules or has worked on methods
+
+-   someone from SEER who has worked on Methods, MP rules
+
+# Author information
+
+Marian Eberl: Chair of Epidemiology, TUM School of Medicine and Health, Technical University of Munich, Munich, Germany, <https://orcid.org/0000-0001-6584-3197>, marian.eberl\@tum.de
+
+Luana F. Tanaka: Chair of Epidemiology, TUM School of Medicine and Health, Technical University of Munich, Munich, Germany, <https://orcid.org/0000-0002-2086-7491>, luana.tanaka\@tum.de
+
+Klaus Kraywinkel: German Centre for Cancer Registry Data, Robert Koch-Institut, Berlin, Germany, <https://orcid.org/0000-0002-9250-6003>, KraywinkelK\@rki.de
+
+Stefanie J. Klug: Chair of Epidemiology, TUM School of Medicine and Health, Technical University of Munich, Munich, Germany, <https://orcid.org/0000-0003-3523-1362>, stefanie.klug\@tum.de
+
+# Address for correspondence
+
+Marian Eberl, Georg-Brauchle-Ring 56, 80992 München, Germany,
+marian.eberl@tum.de
+
+
+# Keywords
+
+second primary cancer, lung cancer, cancer epidemiology, cancer registry data, standardized incidence ratio
+
+# Abstract {#abstract}
+
+```{r}
+#| label: abstract-values
+
+res_n_reg_zfkd <- pop_methods_sum_byregion %>%
+  filter(reg == "zfkd") %>%
+  nrow()
+
+res_splc_f_sir2 <- tab3 %>% 
+  filter(fu_time_sort == 999 & break_value == "Total - All lung cancers" & sex == "Female") %>% pull(zfkd.sir2_sub.sir) %>% sprintf("%.2f", .)
+res_splc_f_sir2_l <- tab3 %>% 
+  filter(fu_time_sort == 999 & break_value == "Total - All lung cancers" & sex == "Female") %>% pull(zfkd.sir2_sub.sir_lci) %>% sprintf("%.2f", .)
+res_splc_f_sir2_u <- tab3 %>% 
+  filter(fu_time_sort == 999 & break_value == "Total - All lung cancers" & sex == "Female") %>% pull(zfkd.sir2_sub.sir_uci) %>% sprintf("%.2f", .)
+res_splc_m_sir2 <- tab3 %>% 
+  filter(fu_time_sort == 999 & break_value == "Total - All lung cancers" & sex == "Male") %>% pull(zfkd.sir2_sub.sir) %>% sprintf("%.2f", .)
+res_splc_m_sir2_l <- tab3 %>% 
+  filter(fu_time_sort == 999 & break_value == "Total - All lung cancers" & sex == "Male") %>% pull(zfkd.sir2_sub.sir_lci) %>% sprintf("%.2f", .)
+res_splc_m_sir2_u <- tab3 %>% 
+  filter(fu_time_sort == 999 & break_value == "Total - All lung cancers" & sex == "Male") %>% pull(zfkd.sir2_sub.sir_uci) %>% sprintf("%.2f", .)
+
+```
+
+**Background:** Lung cancer (LC) survivors are at increased risk for developing a second primary cancer (SPC) compared to the general population.
+While this risk is particularly high for smoking-related SPCs, the published standardized incidence ratio (SIR) for lung cancer after lung cancer is unexpectedly low in countries that follow international multiple primary (IARC/IACR MP) rules when compared to the United States, where distinct rules are employed.
+IARC/IACR rules rely on histology-dependent documentation of SPC with the same location as the first cancer and only classify an SPC when `r dic_tumor`s present different histology.
+Thus, SIR might be underestimated in cancer registries using these rules.
+This study aims to assess whether using histology-specific reference rates for calculating SIR improves risk estimates for second primary lung cancer (SPLC) in LC survivors.
+
+**Methods:** We i) use the distribution of histologic subtypes of LC in population-based cancer registry data of `r res_n_reg_zfkd` regional cancer registries from Germany to present evidence that the conventional SIR metric underestimates the actual risk for SPLC in LC survivors in registries that use IARC/IACR MP rules; ii) present updated risk estimates for SPLC in Germany using a novel method to calculate histological subtype-specific SIRs; and iii) validate this new method using U.S.
+SEER (Surveillance, Epidemiology, and End Results Program) data, where different MP rules are applied.
+
+**Results:** The adjusted relative risk for lung cancer survivors in Germany to develop an SPLC was `r res_splc_f_sir2` (95% CI: `r res_splc_f_sir2_l`--`r res_splc_f_sir2_u`) for females and `r res_splc_m_sir2` (95% CI: `r res_splc_m_sir2_l`--`r res_splc_m_sir2_u`) for males using the novel histology-specific SIR.
+When using IARC/IACR MP rules, the conventional SIR underestimates the actual risk for SPLC in LC survivors by approximately 30% for both sexes.
+
+**Conclusion:** Our proposed histology-specific method makes the SIR metric more robust against MP rules and thus more suitable for cross-country comparisons.
+
+# Background {#intro}
+
+The International Agency for Research on Cancer (IARC) collects, `r if(en_gb){"harmonises"}else{"harmonizes"}`, and publishes data on cancer incidence worldwide.
+According to recent estimates, 2.2 million lung cancer (LC) cases were newly diagnosed worldwide in 2020, comprising 11.4% of all cancer diagnoses with an increasing incidence trend among women [@sungGlobalCancerStatistics2021a; @zhou2022].
+Lung cancer survivors are at an overall increased risk for developing a second primary cancer (SPC) compared to the general population.
+Subsequent `r dic_tumor`s of the oral cavity, pharynx, digestive and respiratory organs are of particular importance because a large proportion of survivors are long-time smokers who continue smoking [@aredo2021; @boakye2019; @parkSnapshotSmokersFollowing2012; @walkerSmokingRelapseFirst2006].
+However, for some countries, such as Germany or the UK, published `r if(en_gb){"standardised"}else{"standardized"}` incidence ratios (SIR) for second primary lung cancer (SPLC) after lung cancer are unexpectedly low and even suggest a risk reduction for diseased males compared to the general population (e.g., 0.83 and 2.06 for males and females in Germany [@eberlIncidence2022]; 1.47 in the UK (not stratified by sex) [@barclayIncidenceSecondHigher2019]).
+Data from the United States, in contrast, indicate that lung cancer survivors are three to five times more likely to have another lung `r dic_tumor` than the general population, which has lower smoking rates (SIR = 3.38 for males and 4.85 for females) [@thakurRiskSecondLung2018].
+
+An essential difference between the US data with a high risk for SPLC and German data with a much lower risk is that national registries apply different rules defining SPLCs.
+The German registries, and most other international registries, follow the rules for multiple primary cancers (MP rules) defined by the International Agency for Research on Cancer and the International Association for Cancer Registration (IARC/IACR) [@iarcworkinggroupreportInternationalRulesMultiple2005].
+They define that only one primary cancer per organ can be diagnosed in a patient's lifetime unless multiple `r dic_tumor`s are "histologically different".
+IARC/IACR MP rules define eight different histological groups for LC [@internat2013].
+In contrast, North American cancer registries follow the rules of the Surveillance, Epidemiology, and End Results Program (SEER) [@johnson2007], considering timing, laterality, and more detailed histology with 34 different groups.
+Consequently, a second lung adenocarcinoma in a person fully recovered from a previous lung adenocarcinoma diagnosis would not be classified as an SPLC according to IARC/IACR rules, even if the two events are ten years apart.
+In contrast, SEER would classify the diagnosis as an SPLC because any `r dic_tumor` is considered a new primary LC after three disease-free years.
+Additionally, even if the disease-free period since initial diagnosis is shorter, an SPLC would be registered in the U.S. registries if the second adenocarcinoma had an ICD-O-3 histology code that was different at the third number (e.g., bronchiolo-alveolar adenocarcinoma 8250 and papillary adenocarcinoma 8260).
+Supplement S1 shows a detailed comparison of IARC/IACR and SEER MP rules.
+
+Estimating risk for same-site SPC has been an unsolved methodological issue for many years, and experts have warned that using SIR can be misleading [@jégu2017] and cross-country comparison is difficult due to varying registration practices [@thunCancerEpidemiologyPrevention2017].
+Consequently, recent high-quality publications have not presented respective estimates [@sungAssociationFirstPrimary2020; @boakye2019] or highlighted that low risk estimates contradict increased exposure and may be an artifact of calculating SIR as a relative risk estimate[@eberlIncidence2022].
+For cancer registries using IARC/IACR MP rules, SIRs might be underestimated due to the histology-dependent documentation of SPC with the same location as the first cancer.
+We want to narrow this methodological gap in cancer epidemiology by proposing an adapted risk estimate for same-site SPC that considers the histologic subtype of the first cancer.
+
+**Objective:** This study aims to assess whether using histology-specific reference rates for estimating the expected number of cases improves the estimation of SIR for SPLC in LC survivors.
+Therefore, this analysis i) demonstrates how the conventional SIR metric underestimates the risk for SPLC in LC survivors documented in cancer registries that use IARC/IACR MP rules, and ii) proposes a novel method to calculate histology-specific SIRs to reduce bias and presents updated risk estimates for SPLC in Germany.
+Finally, we iii) validate our results by comparing how this new method performs when estimating risk for SPLC in the United States, where multiple primaries are registered following SEER rules.
+
+# Material and methods {#methods}
+
+```{r}
+#| label: methods-values
+
+res_n_reg_zfkd <- pop_methods_sum_byregion %>%
+  filter(reg == "zfkd") %>%
+  nrow()
+
+
+```
+
+## Data
+
+This study uses pooled data from `r res_n_reg_zfkd` regional German population-based cancer registries (PBCRs) that follow IARC/IACR MP rules, covering \~50% \[40 million\] of the German population [@DatensatzZfKDAuf2017].
+The analysis dataset included all LC survivors diagnosed between 2002 and 2013 who survived at least six months after the initial diagnosis.
+The data source has been previously described [@eberlIncidence2022; @arndt2020]; details on case selection and data modifications are described in Supplement S2 and S3.
+
+As a validation dataset, we pooled data from 17 SEER regions that started registration before 2002 [@SEERStatDatabase2019].
+Details on the included regions and data quality can be found in Supplement S4.
+Methodological aspects of the SEER database were described by Curtis et al. [@newmali2006].
+
+We set the end of follow-up in both data sources to 31 December 2014 to ensure comparability.
+We counted SPLC (ICD-10 code C34) and excluded unusual morphology codes for LC that were likely miscoded metastases (codes `r unusual_hist`).
+
+Our definition of histologically different groups is based on the International Classification of Diseases for Oncology, third edition (ICD-O-3), revision 1, published in 2013 [@internat2013].
+The 4-digit morphology codes were converted into histology groups as listed in Supplement S5.
+To present aggregated results, we additionally grouped the histologic subtypes of LC into squamous cell carcinoma (SCC), adenocarcinoma (AC), small-cell carcinoma (SCLC), large-cell carcinoma (LCC), and other & unspecified (O&U) as suggested by the WHO classification of thoracic `r dic_tumor`s [@thoracic2021].
+
+## Statistical analysis
+
+### i) Estimating the size of bias for using standard SIR
+
+We simulated various scenarios to estimate the size of bias introduced by using general population reference rates for calculating SIR (ratio of observed to expected cancers O/E) of same-site SPC when IARC/IACR MP rules are applied.
+This bias occurs because the count for O excludes same-histology SPLC, while the reference rates used to calculate E include same-histology.
+Our first simulation setting is that the baseline risk of LC survivors to develop an SPLC is the same as that for the general population (real SIR = 1.0).
+We determined the proportions of histologically different LC groups $p_{hist_j}$ in the analysis dataset for all index LC cases stratified by sex and assumed that the SPLC would have the same histology group distribution as for the first cancer.
+To obtain the simulated $SIR_{simIARC}$, we multiplied each stratum of obtained expected numbers with a sex- and histology-group correction factor $x_{hist_j} = 1-p_{hist_j}$ for combinations of LC and SPLC that are not possible in our observed cases.
+In addition to the scenario of no risk difference, we also simulate an actual doubling of SPLC risk for LC survivors ($SIR_{real}=2.0$) and a risk increase equivalent to data from the U.S.
+LC survivors for males ($SIR_{real}=3.38$) and females ($SIR_{real}=4.85$) published by Thakur et al. [@thakurRiskSecondLung2018].
+Further details on the simulations can be found in \[Supplement S6\].
+
+### ii) Calculating a histology-specific SIR
+
+To calculate the established observed to expected ratio for SPLC, referred to as SIR1~raw~, we used age-, sex-, region- and period-specific general reference rates obtained from the full sample of German PBCR data, including DCO cases.
+Next, we propose a novel method to calculate reference rates that are specific to histologically different groups of LC, e.g., the rate for adenocarcinomas in the location of the lung and bronchus.
+Calculating histological subtype-specific SIR (SIR2~sub~) removes the discrepancy between the exclusion of same-histology group `r dic_tumor`s from the observed count (O) - due to IARC/IACR MP rules - and the inclusion of those same histology groups in the reference rates.
+In detail, when calculating the SIR2~sub~, we always stratify by the histology group of the first `r dic_tumor`.
+Then, we used histology-specific reference rates $IR_{ij}$ that excluded the same histology group from the incidence.
+In settings where same-histology SPC occur in the data (i.e., PBCR not applying IARC/IACR MP rules), those cancers are not counted as observed.
+Finally, we aggregate $O$ and $E$ for the total available follow-up from six months to a maximum of 13 years and report sex-specific SIR for SPLC \[[Figure 1]\] and calculated 95% confidence intervals (CIs) as described by Breslow and Day [@breslow1987].
+
+### iii) Validation analysis using SEER data
+
+To validate our newly proposed method, we apply the SIR2~sub~ measure to cancer registry data that does not follow IARC/IACR MP rules and assess whether this introduces unintended bias.
+We present descriptive statistics on the validation dataset and interpret comparability with the analysis dataset.
+Then, we calculate the unadjusted SIR1~raw~ for the U.S. and SIR2~sub~ using the same method described above.
+Furthermore, we obtained individual-level information on which cancer cases in the SEER data fulfill the IARC/IACR MP rules (variable INTPRIM).
+We recalculated the unadjusted SIR for SPLC counted under IARC/IACR rules (SIR3~IARC~) and histology-specific SIR (SIR4~subIARC~) using patient-level data to receive updated reference rates.
+To assess the validity of our histology-specific SIR method, we compare the following:
+
+a.  SIR2~sub~ and SIR4~subIARC~ in the validation dataset with the expectation that they are very similar and lie between SIR1~raw~ and SIR3~IARC~ (this would show that the new method delivers a robust estimate, independent of MP rules applied),
+
+b.  SIR2~sub~ estimates between Germany and the U.S. with the expectation that they should be closer than SIR1~raw~ estimates (this is relevant for a scenario where a registry's abidance by IARC/IACR rules is unknown and we want to receive an estimate suitable for cross-country comparison),
+
+c.  SIR2~sub~ estimates from Germany to SIR4~subIARC~ estimates from the U.S. to determine the size of residual cross-country differences.
+
+### Sensitivity analyses
+
+For sensitivity analyses, we restricted our dataset to six German PBCRs with a low DCO rate (smaller than 10%) - an indicator for higher registration quality - and assessed whether this influences the overall risk estimate for SPLC in Germany.
+Furthermore, we compared results from the German analysis dataset to SEER data for the White population only to account for the majority Caucasian population in Germany.
+
+## Software used
+
+All analyses were conducted in R version 4.3.1 [@rcoreteamLanguageEnvironmentStatistical2020] with data management using the *tidyverse* and *tidytable* packages [@wickhamWelcomeTidyverse2019; @fairbanksTidytableTidyInterface2020].
+Figures were created with *ggplot2* [@wickhamGgplot2ElegantGraphics2016] and tables with *gt* [@iannoneGtEasilyCreate2020].
+The routines to calculate reference rates and stratified SIRs are publicly available in the R package *msSPChelpR* [@eberlMsSPChelpRHelperFunctions2022], and all scripts to create our analyses are published online [@eberl2023].
+
+# Results {#results}
+
+## Description of the study population
+
+```{r}
+#| label: res-values-desc
+
+#--put result numbers into short variables
+res_n_lc_f <- tab1 %>% filter(category == "n (% of Total)") %>% pull(n_zfkd_Female)
+res_n_lc_m <- tab1 %>% filter(category == "n (% of Total)") %>% pull(n_zfkd_Male)
+res_n_lc_t <- res_n_lc_f + res_n_lc_m
+res_perc_lc_f <- tab1 %>% filter(category == "n (% of Total)") %>% pull(freq_zfkd_Female) %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_lc_m <- tab1 %>% filter(category == "n (% of Total)") %>% pull(freq_zfkd_Male) %>% "*"(100) %>% sprintf("%.1f%%", .)
+
+res_age_f <- tab1 %>% filter(category == "Median age [years]") %>% pull(value_zfkd_Female) %>% sprintf("%.1f", .)
+res_age_m <- tab1 %>% filter(category == "Median age [years]") %>% pull(value_zfkd_Male) %>% sprintf("%.1f", .)
+
+res_perc_lc_ac_f <- tab1 %>% filter(category == "Adenocarcinoma (AC)") %>% pull(freq_zfkd_Female) %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_lc_sclc_f <- tab1 %>% filter(category == "Small cell carcinoma (SCLC)") %>% pull(freq_zfkd_Female) %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_lc_ac_m <- tab1 %>% filter(category == "Adenocarcinoma (AC)") %>% pull(freq_zfkd_Male) %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_lc_scc_m <- tab1 %>% filter(category == "Squamous cell carcinoma (SCC)") %>% pull(freq_zfkd_Male) %>% "*"(100) %>% sprintf("%.1f%%", .)
+
+res_n_splc_f <- tab1 %>% filter(category == "SPLC developed") %>% pull(n_zfkd_Female)
+res_n_splc_m <- tab1 %>% filter(category == "SPLC developed") %>% pull(n_zfkd_Male)
+res_perc_splc_f <- tab1 %>% filter(category == "SPLC developed") %>% pull(freq_zfkd_Female) %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_splc_m <- tab1 %>% filter(category == "SPLC developed") %>% pull(freq_zfkd_Male) %>% "*"(100) %>% sprintf("%.1f%%", .)
+
+res_n_spc_t <- {tab1 %>% filter(category == "other SPC developed") %>% pull(n_zfkd_Female)} + {tab1 %>% filter(category == "other SPC developed") %>% pull(n_zfkd_Male)}
+res_perc_spc_t <- {res_n_spc_t / res_n_lc_t * 100} %>% sprintf("%.1f%%", .)
+
+res_ir_spc_f <- tab1 %>% filter(category == "Other SPC IR [per 100,000 PYAR] (95% CI)") %>% pull(value_zfkd_Female) %>% sprintf("%.1f", .)
+res_ir_spc_m <- tab1 %>% filter(category == "Other SPC IR [per 100,000 PYAR] (95% CI)") %>% pull(value_zfkd_Male) %>% sprintf("%.1f", .)
+res_ir_spc_f_us <- tab1 %>% filter(category == "Other SPC IR [per 100,000 PYAR] (95% CI)") %>% pull(value_seer_Female) %>% sprintf("%.1f", .)
+res_ir_spc_m_us <- tab1 %>% filter(category == "Other SPC IR [per 100,000 PYAR] (95% CI)") %>% pull(value_seer_Male) %>% sprintf("%.1f", .)
+
+res_ir_splc_f <- tab1 %>% filter(category == "SPLC IR [per 100,000 PYAR] (95% CI)") %>% pull(value_zfkd_Female) %>% sprintf("%.1f", .)
+res_ir_splc_m <- tab1 %>% filter(category == "SPLC IR [per 100,000 PYAR] (95% CI)") %>% pull(value_zfkd_Male) %>% sprintf("%.1f", .)
+res_ir_splc_f_us <- tab1 %>% filter(category == "SPLC IR [per 100,000 PYAR] (95% CI)") %>% pull(value_seer_Female) %>% sprintf("%.1f", .)
+res_ir_splc_m_us <- tab1 %>% filter(category == "SPLC IR [per 100,000 PYAR] (95% CI)") %>% pull(value_seer_Male) %>% sprintf("%.1f", .)
+
+```
+
+Our analysis dataset comprised `r res_n_lc_t %>% format(big.mark=",")` German LC patients (`r res_perc_lc_f` females and `r res_perc_lc_m` males) who survived for at least six months after LC diagnosis and fulfilled our inclusion criteria.
+The median age at initial diagnosis was `r res_age_f` years in women and `r res_age_m` years in men.
+Women were most frequently diagnosed with adenocarcinomas (`r res_perc_lc_ac_f`) and small cell carcinomas (`r res_perc_lc_sclc_f`), while `r res_perc_lc_scc_m` of men had squamous cell carcinomas and `r res_perc_lc_ac_m` had adenocarcinomas.
+Patients had a mean follow-up of approximately 2.5 years.
+Over 70% of patients died after LC without developing another cancer, and another 24% were alive without an SPC event at the end of follow-up.
+In total, `r res_n_splc_f` women and `r res_n_splc_m` men (`r res_perc_splc_f` of patients) developed an SPLC.
+This corresponds to the crude incidence rate of `r res_ir_splc_f` per 100,000 person-years in women and `r res_ir_splc_m` in men.
+Another `r res_n_spc_t %>% format(big.mark=",")` LC survivors (`r res_perc_spc_t`) developed a second cancer in a location other than the lung and bronchus ([Table 1](#tab1)).
+
+## i) Evidence for bias using the conventional SIR estimates for same-site SPC
+
+```{r}
+#| label: res-values-bias
+
+res_perc_lc_adeno_f <- d1_lung_wide %>% filter(t_histgroupiarc.1 == "Adenocarcinomas" & p_sex.1 == "Female" & reg.1 == "zfkd") %>% nrow() %>% "/"(res_n_lc_f) %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_lc_adeno_m <- d1_lung_wide %>% filter(t_histgroupiarc.1 == "Adenocarcinomas" & p_sex.1 == "Male" & reg.1 == "zfkd") %>% nrow() %>% "/"(res_n_lc_m) %>% "*"(100) %>% sprintf("%.1f%%", .)
+
+res_perc_lc_squa_f <- d1_lung_wide %>% filter(t_histgroupiarc.1 == "Squamous carcinomas" & p_sex.1 == "Female" & reg.1 == "zfkd") %>% nrow() %>% "/"(res_n_lc_f) %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_lc_squa_m <- d1_lung_wide %>% filter(t_histgroupiarc.1 == "Squamous carcinomas" & p_sex.1 == "Male" & reg.1 == "zfkd") %>% nrow() %>% "/"(res_n_lc_m) %>% "*"(100) %>% sprintf("%.1f%%", .)
+
+res_perc_lc_oth_f <- d1_lung_wide %>% filter(t_histgroupiarc.1 == "Other specific carcinomas" & p_sex.1 == "Female" & reg.1 == "zfkd") %>% nrow() %>% "/"(res_n_lc_f) %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_lc_oth_m <- d1_lung_wide %>% filter(t_histgroupiarc.1 == "Other specific carcinomas" & p_sex.1 == "Male" & reg.1 == "zfkd") %>% nrow() %>% "/"(res_n_lc_m) %>% "*"(100) %>% sprintf("%.1f%%", .)
+
+res_perc_lc_unspec_t <- d1_lung_wide %>% filter(t_histgroupiarc.1 %in% c("Unspecified carcinomas (NOS)", "Unspecified types of cancer") & reg.1 == "zfkd") %>% nrow() %>% "/"(res_n_lc_t) %>% "*"(100) %>% sprintf("%.1f%%", .)
+
+res_perc_samehist_us_min <- supp_tab_samehist %>% filter(str_detect(p_region.1, "SEER")) %>% pull(freq_hist_same) %>% min() %>% "*"(100) %>% sprintf("%.1f%%", .)
+res_perc_samehist_us_max <- supp_tab_samehist %>% filter(str_detect(p_region.1, "SEER")) %>% pull(freq_hist_same) %>% max() %>% "*"(100) %>% sprintf("%.1f%%", .)
+
+res_sirsim_1_f <- tab2 %>% filter(sex == "Female") %>% pull(sir_1) %>% sprintf("%.2f", .)
+res_sirsim_1_f_l <- tab2 %>% filter(sex == "Female") %>% pull(sir_lci_1) %>% sprintf("%.2f", .)
+res_sirsim_1_f_u <- tab2 %>% filter(sex == "Female") %>% pull(sir_uci_1) %>% sprintf("%.2f", .)
+res_sirsim_1_m <- tab2 %>% filter(sex == "Male") %>% pull(sir_1) %>% sprintf("%.2f", .)
+res_sirsim_1_m_l <- tab2 %>% filter(sex == "Male") %>% pull(sir_lci_1) %>% sprintf("%.2f", .)
+res_sirsim_1_m_u <- tab2 %>% filter(sex == "Male") %>% pull(sir_uci_1) %>% sprintf("%.2f", .)
+res_sirsim_2_f <- tab2 %>% filter(sex == "Female") %>% pull(sir_2) %>% sprintf("%.2f", .)
+res_sirsim_2_m <- tab2 %>% filter(sex == "Male") %>% pull(sir_2) %>% sprintf("%.2f", .)
+res_sirsim_3.38_m <- tab2 %>% filter(sex == "Male") %>% pull(sir_3.38) %>% sprintf("%.2f", .)
+res_sirsim_4.85_f <- tab2 %>% filter(sex == "Female") %>% pull(sir_4.85) %>% sprintf("%.2f", .)
+
+```
+
+The most frequent histology groups of primary LC in our analysis dataset were adenocarcinomas (`r res_perc_lc_adeno_f` in women, `r res_perc_lc_adeno_m` in men), squamous cell carcinomas (`r res_perc_lc_squa_f` in women, `r res_perc_lc_squa_m` in men) and other specific carcinomas (`r res_perc_lc_oth_f` in women, `r res_perc_lc_oth_m` in men) \[Supplement S7\].
+Unspecified carcinomas and unspecified types of cancer comprised `r res_perc_lc_unspec_t` of LC and, by IARC/IACR rules, could not result in the registration of an SPLC, even if one was diagnosed.
+In line with IARC/IACR registration rules, none diagnosed SPLC had the same histology group as the index LC in the German data.
+In contrast, the U.S. validation data showed that the SEER registries had between `r res_perc_samehist_us_min` and `r res_perc_samehist_us_max` same histology group SPLC \[Supplement S8\].
+
+The simulation shows that real SIRs are underestimated when IARC/IACR rules are applied for SPLC.
+In the hypothetical case of SIR~real~ = 1.0, the simulated SIR~simIARC~ is `r res_sirsim_1_f` (95% CI: `r res_sirsim_1_f_l`--`r res_sirsim_1_f_u`) for women and `r res_sirsim_1_m` (95% CI: `r res_sirsim_1_m_l`--`r res_sirsim_1_m_u`) for men, incorrectly suggesting a risk reduction instead of no risk difference.
+A doubling of the risk in real SIR would translate to a SIR~simIARC~ of `r res_sirsim_2_f` for women and `r res_sirsim_2_m` for men.
+When simulating the U.S. rates under IARC/IACR MP rules, we obtain a SIR~simIARC~ of `r res_sirsim_3.38_m` instead of SIR~real~ = 3.38 for men and a SIR~simIARC~ of `r res_sirsim_4.85_f` instead of SIR~real~ = 4.85 for women.
+Despite the differences in predominant histology groups of LC between men and women, we observed a similar underestimation of real SIR by approximately 30% for both sexes \[[Table 2]\].
+
+## ii) Risk estimates for SPLC after LC in Germany using histology-specific SIR
+
+```{r}
+#| label: res-values-splc
+
+res_splc_f_sir2 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_f_sir2_l <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir_lci) %>% sprintf("%.2f", .)
+res_splc_f_sir2_u <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir_uci) %>% sprintf("%.2f", .)
+res_splc_m_sir2 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Male") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_m_sir2_l <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Male") %>% pull(sir_lci) %>% sprintf("%.2f", .)
+res_splc_m_sir2_u <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Male") %>% pull(sir_uci) %>% sprintf("%.2f", .)
+
+res_splc_scc_f_sir2 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(SCC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_scc_f_sir2_l <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(SCC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir_lci) %>% sprintf("%.2f", .)
+res_splc_scc_f_sir2_u <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(SCC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir_uci) %>% sprintf("%.2f", .)
+
+res_splc_sclc_m_sir2 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(SCLC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Male") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_sclc_m_sir2_l <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(SCLC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Male") %>% pull(sir_lci) %>% sprintf("%.2f", .)
+res_splc_sclc_m_sir2_u <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(SCLC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Male") %>% pull(sir_uci) %>% sprintf("%.2f", .)
+
+res_splc_m_sir1 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "zfkd" & sex == "Male") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_m_sir1_l <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "zfkd" & sex == "Male") %>% pull(sir_lci) %>% sprintf("%.2f", .)
+res_splc_m_sir1_u <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "zfkd" & sex == "Male") %>% pull(sir_uci) %>% sprintf("%.2f", .)
+
+res_splc_ac_f_sir1 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(AC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "zfkd" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_ac_f_sir1_l <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(AC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "zfkd" & sex == "Female") %>% pull(sir_lci) %>% sprintf("%.2f", .)
+res_splc_ac_f_sir1_u <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(AC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "zfkd" & sex == "Female") %>% pull(sir_uci) %>% sprintf("%.2f", .)
+res_splc_ac_f_sir2 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(AC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_ac_f_sir2_l <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(AC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir_lci) %>% sprintf("%.2f", .)
+res_splc_ac_f_sir2_u <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "(AC)") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "zfkd" & sex == "Female") %>% pull(sir_uci) %>% sprintf("%.2f", .)
+```
+
+The adjusted relative risk for LC survivors in Germany to develop an SPLC was `r res_splc_f_sir2` (95% CI: `r res_splc_f_sir2_l`--`r res_splc_f_sir2_u`) for females and `r res_splc_m_sir2` (95% CI: `r res_splc_m_sir2_l`--`r res_splc_m_sir2_u`) for males.
+The histological subtypes of index LC with the highest relative risk for SPLC were squamous cell carcinoma (SIR2~sub~ = `r res_splc_scc_f_sir2`, 95% CI: `r res_splc_scc_f_sir2_l`--`r res_splc_scc_f_sir2_u`) in women and SCLC (SIR2~sub~ = `r res_splc_sclc_m_sir2`, 95% CI: `r res_splc_sclc_m_sir2_l`--`r res_splc_sclc_m_sir2_u`) in men.
+[Figure 2] shows that the proposed method of using histological subtype-specific SIR resulted in higher risk estimates.
+This means that under this adjusted risk estimate, male LC survivors have a 15% higher risk for SPLC than the German male population.
+A risk increase was observed for all histological subtypes except for large-cell carcinoma.
+In contrast, the unadjusted SIR resulted in a 15% lower risk than in the male population (SIR1~raw~ = `r res_splc_m_sir1`, 95% CI: `r res_splc_m_sir1_l`--`r res_splc_m_sir1_u`).
+For female LC survivors, the new method further increased risk estimates, particularly for adenocarcinoma (SIR2~sub~ = `r res_splc_ac_f_sir2`, 95% CI: `r res_splc_ac_f_sir2_l`--`r res_splc_ac_f_sir2_u` vs. SIR1~raw~ = `r res_splc_ac_f_sir1`, 95% CI: `r res_splc_ac_f_sir1_l`--`r res_splc_ac_f_sir1_u`).
+When stratifying the analysis by time since LC diagnosis, the SIR2~sub~ increased with more prolonged survival for both sexes \[Supplement S11\].
+
+```{r}
+#| label: res-sens-pt1
+res_sensa_pyars <- res_sensa_stats$pyars %>% round(., 0) %>% format(., big.mark = ",")
+res_sensa_n_splc <- res_sensa_stats$n_splc %>% sprintf("%.0f", .)
+res_sensa_n_splc_perc <- {res_sensa_stats$n_splc / (res_n_splc_f +res_n_splc_m) * 100}  %>% sprintf("%.1f%%", .)
+
+res_sensa_sir2_f <- sensa_tab3 %>% filter(break_value == "Total - All lung cancers" & sex == "Female") %>% pull(zfkd.sir2_sub.sir) %>% sprintf("%.2f", .)
+res_sensa_sir2_m <- sensa_tab3 %>% filter(break_value == "Total - All lung cancers" & sex == "Male") %>% pull(zfkd.sir2_sub.sir) %>% sprintf("%.2f", .)
+
+```
+
+In the sensitivity analysis based on `r res_sensa_pyars` person-years at risk from German PBCRs with low DCO rates, `r res_sensa_n_splc` SPLC occurred (`r res_sensa_n_splc_perc` of the initial analysis dataset).
+Both SIR1~raw~ and SIR2~sub~ were considerably lower than in the main analysis (SIR2~sub~ = `r res_sensa_sir2_f` in females, SIR2~sub~ = `r res_sensa_sir2_m` in males), but the overall pattern of substantial risk estimate increase using SIR2~sub~ remained \[Supplement S9\].
+
+## iii) Validation analysis using SEER data
+
+```{r}
+#| label: res-values-valid
+
+res_splc_m_sir1_us <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "seer" & sex == "Male") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_m_sir2_us <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "seer" & sex == "Male") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_m_sir3_us <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir3_iarc" & registry == "seer" & sex == "Male") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_m_sir4_us <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir4_subiarc" & registry == "seer" & sex == "Male") %>% pull(sir) %>% sprintf("%.2f", .)
+  
+res_splc_f_sir1_us <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "seer" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_f_sir2_us <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir2_sub" & registry == "seer" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_f_sir3_us <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir3_iarc" & registry == "seer" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_f_sir4_us <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir4_subiarc" & registry == "seer" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+
+res_splc_f_sir1 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "zfkd" & sex == "Female") %>% pull(sir) %>% sprintf("%.2f", .)
+res_splc_m_sir1 <- res_sum_sir %>% 
+  filter(fu_time_sort == 999 & str_detect(t_sublungiarcgroup.1, "Total") & str_detect(t_site, "Lung and Bronchus") & method == "sir1_raw" & registry == "zfkd" & sex == "Male") %>% pull(sir) %>% sprintf("%.2f", .)
+
+```
+
+[Table 1](#tab1) shows that our analysis dataset (German ZfKD data from 11 regions) and the validation dataset (U.S. SEER data from 17 regions) are comparable concerning most characteristics of included LC survivors with similar age structure, histology group distribution, and patient status.
+However, Germany still has a growing age-standardized incidence rate for women, and the rate for men is at a higher level than in the U.S.
+We also see that crude incidence rates for SPC in locations other than the lung and bronchus are similar for Germany (females: `r res_ir_spc_f` and males: `r res_ir_spc_m` per 100,000 person-years) and the U.S. (females: `r res_ir_spc_f_us` and males: `r res_ir_spc_m_us` per 100,000 person-years).
+The incidence of SPLC, however, differs greatly –- the U.S. are showing six to eight times higher crude rates than Germany (`r res_ir_splc_f_us` vs. `r res_ir_splc_f` per 100,000 person-years for women and `r res_ir_splc_m_us` vs. `r res_ir_splc_m` for men).
+
+The unadjusted risk estimates for SPLC in U.S.
+LC survivors under SEER MP rules were more than 2-fold the rates under IARC/IACR MP rules (SIR1~raw~ = `r res_splc_f_sir1_us` and SIR3~IARC~ = `r res_splc_f_sir3_us` in women; SIR1~raw~ = `r res_splc_m_sir1_us` and SIR3~IARC~ = `r res_splc_m_sir3_us` in men).
+When using the histology-specific method, the risk estimates converge for overall SPLC risk (SIR2~sub~ = `r res_splc_f_sir2_us` and SIR4~subIARC~ = `r res_splc_f_sir4_us` in women; SIR2~sub~ = `r res_splc_m_sir2_us` and SIR4~subIARC~ = `r res_splc_m_sir4_us` in men) and for most subgroups presented in [Table 3](#tab3).
+
+Comparing estimates between Germany and the U.S., we observed that SIR2~sub~ estimates are much closer than SIR1~raw~.
+In women, the gap narrows from `r res_splc_f_sir1` vs. `r res_splc_f_sir1_us` for unadjusted SIR to `r res_splc_f_sir2` vs. `r res_splc_f_sir2_us`.
+In men, the wide unadjusted gap of `r res_splc_m_sir1` vs. `r res_splc_m_sir1_us` narrows slightly to `r res_splc_m_sir2` vs. `r res_splc_m_sir2_us`.
+When examining the histology-specific estimate under IARC/IACR MP rules (SIR4~subIARC~), we still see a residual country difference with only slightly lower SPLC risk in German women (`r res_splc_f_sir2` vs. `r res_splc_f_sir4_us`) but half the risk for males compared to the U.S. (`r res_splc_m_sir2` vs. `r res_splc_m_sir4_us`).
+For some subgroups with a small number of observed cases in the German data, such as patients with large-cell carcinoma or below age 50, the risk gap between analysis and validation data may remain high, even after using the novel SIR estimate \[[Table 3]\].
+
+```{r}
+#| label: res-sens-pt2
+
+
+
+```
+
+The sensitivity analyses, comparing Germany to the White population in SEER, did not alter the results, showing that previous stratification of SIR by race adequately accounts for risk differences between races \[Supplement S10\].
+
+```{r}
+#| label: res-test
+#| include: false
+
+#a few tests to make sure nothing has unexpectedly changed
+
+##Case numbers
+##inclusion criteria fulfilled
+#testthat::expect_equal(nrow_d2_all, 263921)
+##main analysis cohort
+#testthat::expect_equal(nrow_d1_s6_srv, 135589)
+# 
+# ##ASIR rates
+# testthat::expect_equal(res_asir_m2002, "63.7")
+# testthat::expect_equal(res_asir_m2013, "50.0")
+# 
+# ##Outcomes
+# testthat::expect_equal(res_n_spc_perc, "3.9")
+# testthat::expect_equal(res_smo_m1_sir, "1.39")
+# testthat::expect_equal(res_2002_t_sir_u, "1.39")
+# 
+# ##Sensitivity
+# testthat::expect_equal(res_pyars_lowdco, "59,639")
+
+```
+
+# Discussion {#discussion}
+
+```{r}
+#| label: dis-values
+
+
+```
+
+In this epidemiological study on the risk of SPLC, we demonstrated a bias introduced by the standard approach of calculating SIR for same-site SPC in cancer registries that use IARC/IACR MP rules.
+Our simulations showed an underestimation of true SIR by approximately 30% in both sexes because general population reference rates include `r dic_tumor`s that cannot be observed in the at-risk population.
+
+To minimize this bias, we proposed the method of histology-specific SIR and presented adjusted numbers to estimate the relative risk of SPLC in LC survivors in Germany.
+Using this method, the risk of being diagnosed with an SPLC was `r res_splc_f_sir2`-fold for female LC survivors and `r res_splc_m_sir2`-fold for male survivors compared to the general population.
+These numbers are substantially higher than previously published unadjusted SIR estimates using the standard approach (i.e., 2.06 and 0.83 for female and male LC survivors, respectively) [@eberlIncidence2022].
+
+Our validation analysis showed that the risk estimates for SPLC under SEER MP rules and the risk under IARC/IACR MP rules converge when using the proposed histology-specific compared to the standard approach.
+Moreover, the SPLC risk in Germany and the U.S. became comparable under the new method. Starting from a similar incidence of primary LC, but an eight times higher crude incidence of SPLC in the U.S. compared to Germany - due to different registration rules and population structure – we narrowed this gap to about 2-fold increased risk in the most comparable setting of histology-specific SIR counting international primaries only.
+Thus, we showed that the proposed histology-specific method makes the SIR metric more robust against differing or unclear MP rules and, therefore, more suitable for cross-country comparisons.
+
+With the availability of long-term cancer registry data from SEER, relative risk estimates and survival analyses were predominantly published for the U.S.
+Thakur et al. used 13 SEER registries for the period 1992 to 2007 and found an SIR estimate of 4.85 (4.66--5.05) in women and 3.38 (3.24--3.52) in men [@thakurRiskSecondLung2018].
+Our SIR1~raw~ estimates for a later period with more included regions were slightly higher for both sexes but - as expected for the same data source - showed very similar risk increases for younger age and adenocarcinoma index LC.
+
+Other national population-based estimates of SPLC risk among LC survivors are sparse but include a study by Barclay et al. from the England cancer registry that showed an overall SIR for SPLC of 1.47 (not stratified by sex) for the same period, also using IARC/IACR MP rules and very similar case inclusion as our study [@barclayIncidenceSecondHigher2019].
+They included almost 30% of unspecified LC diagnoses, which might explain their low overall unadjusted SIR estimate.
+
+For Germany, we observed that using histology-specific calculation of risk for SPLC resulted in very different conclusions than the standard method.
+The previously published risk reduction for male LC survivors [@eberlIncidence2022] turns into a risk increase in our updated analysis.
+Similarly, for the most frequent subtypes of LC, the risk of SPLC increases from a protective or null effect to a significant risk increase for LC survivors compared to the general population.
+In line with previous findings from Germany, the U.S., and England, females have a higher relative risk for SPLC than males [@eberlIncidence2022; @barclayIncidenceSecondHigher2019; @thakurRiskSecondLung2018].
+The results of bias simulation apply to other PBCRs using IARC/IACR MP rules because they depend only on the distribution of histology groups, which are similar across countries [@canceri2023].
+
+The SIR is an established measure in cancer epidemiology and beyond to identify at-risk populations and test etiologic hypotheses [@newmali2006].
+However, our analysis revealed the problem that the SIR metric can be seriously biased when observed and expected counts are based on different logics.
+Other examples are handling the intensified screening period of cancer survivors shortly after diagnosis [@newmali2006], including DCO cases in the expected count [@eberl2020], or stratifying by race.
+
+A critical discussion in the analysis of SPC risk is the question of what constitutes biologically independent cancers.
+Although there might be a pathological answer, strict (IARC) and less stringent (SEER) rules for registering multiple primary cancers indicate different approaches.
+While IARC/IACR MP rules were historically focused on excluding potential metastases or recurrences, they give less importance to shared risk factors such as smoking, which can lead to preventable new cancers with the same appearance as the previous disease.
+Therefore, the SEER approach of registering SPC independent of histological differences and instead taking time into account has its merits.
+From the patient's perspective, it is less relevant if, after a phase of complete remission, a new cancer of the same subtype occurs in the same site or whether this is an unexpected late recurrence.
+Both necessitate acute treatment according to the most recent guidelines and come with substantial psychological stress.
+From an epidemiological perspective, the differentiation between what constitutes a true SPC and late recurrence can be seen as arbitrary.
+Both are relevant to evaluating the disease risk of cancer survivors and play a role in the discussion about the need for increased surveillance.
+In particular, contralateral lung cancers are often underreported and instead seen as the spread of the original cancer [@johnson1998].
+On the other hand, it has been shown that certain multifocal `r dic_tumor`s in some organs are likely to originate from the same transformed cells [@dewerra2009] and thus would not have been preventable.
+A potential solution to this dilemma could be to enrich existing PBCR with more information on metastases and recurrence and report the burden of both.
+Furthermore, improving the quality of cancer registries, e.g., increasing the share of microscopically verified cases, would reduce the role of unspecified LC and thus increase the precision of SPC differentiation under IARC/IACR MP rules.
+
+This analysis also highlights the need to improve the clarity of IARC/IACR MP rules that have not been updated since 2004 and do not reflect improvements in (more fine-grained) histological classification since then.
+A simplified version using the broad LC categories recently published in the WHO Reporting System for Lung Cytopathology could be the common basis for a classification update [@thoracic2021; @whorepo2022].
+
+The importance of methodological choices on the validity of the SIR metric to determine and compare group-specific cancer risk has already been discussed.
+Crocetti et al. highlighted that we need to be clear about which cases to include in the observed count and the importance of applying the same logic when making cross-country comparisons and comparing extensively screened patients to the general population reference rates [@crocetti2018].
+Our research extends this concern and highlights that including expected cases in the denominator of the SIR metric while these cases can never be observed –- due to MP rules forbidding their registration -- will introduce bias and result in an underestimation of cancer risk.
+
+This study is the first nationwide analysis to provide reliable estimates of SPLC risk in German LC survivors.
+It adds to the sparse international numbers, as PBCR-based estimates have only been published for the U.S. and England.
+We newly developed the method of histological subtype-specific SIR that can reduce bias caused by using general population reference rates in determining the relative risk of same-site SPC for cancer registry data based on IARC/IACR MP rules.
+The method increases the comparability of SIR across countries; when different MP rules are applied, information on registration practices is missing, or registration practices vary over time within a single PBCR.
+Furthermore, our study is the first to compare the relative risk of SPLC between Germany and the U.S. and provide estimates that allow SEER data to be used in international comparison.
+
+Our proposed method has several limitations. In the situation in which PBCR data is incomplete, i.e., incident SPCs are not recorded in the registry, the proposed method still underestimates the SIR.
+This is especially relevant for IARC-compliant registries where SPCs are not recorded if the histology of the index `r dic_tumor` is unspecified.
+Moreover, the method works best for cancer entities that show a uniform distribution of incidence across histological subtypes.
+For example, the subtype is not informative in breast cancer, where adenocarcinoma comprises more than 90% of all malignancies.
+We encourage researchers with access to cancer registry data from other countries to test the proposed method.
+With regard to the estimation of SPLC risk for Germany, our study results are limited by varying completeness and quality of regional PBCR data -- in particular, the existence tumors without histological confirmation, a high share of DCO diagnoses, and incomplete follow-up of patients in cases of migration or partial record linkage with death registry data.
+Finally, our validation analysis also showed that for registry data under SEER MP rules, the histology-specific SIR generally suggests a lower risk than the unadjusted SIR (except primary SCLC).
+This could be an underestimation of risk if the true SIR of same-histology SPLC is higher than for different-histology `r dic_tumor`s.
+
+# Conclusions
+
+In this study, we newly developed a method of histological subtype-specific SIR that can reduce bias when estimating the relative risk of same-site SPC.
+Our study shows that estimations for the relative risk of SPLC after LC are heavily influenced by differing registration practices for multiple primaries and how data is analyzed.
+Our approach of using histology-specific reference rates improves SIR estimations and facilitates cross-country comparison, especially for PBCRs that apply IARC/IACR MP rules. Future research can use this method to update previous epidemiological studies, allowing clinicians to make informed decisions about patients' SPLC risk based on accurate temporal and regional incidence trends.
+Differing registration practices remain an obstacle when comparing relative risk for SPC across countries and over time. Therefore, it should be further evaluated how MP rules and methods to determine SPC risk in the same location can be harmonized.
+
+# Figures and Tables
+
+## Table 1 {#tab1}
+
+```{r}
+#| label: tab-one
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  tab1_gt$`_heading`$subtitle
+  
+  knitr::include_graphics(file.path(output_dir_tables, "tab1.png"))
+  
+}else{
+   
+  #define variables needed to render gt table
+  rows_ci <- c(2, 24:25) #helper for rows with CIs
+  rh <- 80   #row height in px
+  output_dir_name <- "3_output" #output_dir name for graphs
+  
+  #print table
+  tab1_gt
+  
+}
+```
+
+## Table 2
+
+```{r}
+#| label: tab-sim
+if(knitr::pandoc_to("docx")){
+  knitr::include_graphics(file.path(output_dir_tables, "tab2.png"))
+}else{
+  tab2_gt
+}
+```
+
+## Table 3
+
+```{r}
+#| label: tab-val
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(output_dir_tables, "tab3.png"))
+  
+}else{
+ 
+  tab3_gt
+}
+
+```
+
+## Figure 1
+
+```{r}
+#| label: fig-sircalc
+#| echo: false
+#| fig-cap: 'Comparison of conventional method to calculate standardized incidence ratio (SIR1~raw~) and newly proposed method to stratify by histology group of LC - depicted by blue, green and yellow - and use group-specific reference rates excluding same histology (SIR2~sub~)'
+#| fig-cap-location: bottom
+#| out-width: 100%
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(output_dir_tables, "fig1_sir_explanation.png"))
+  
+}else{
+  knitr::include_graphics(file.path(output_dir_tables, "fig1_sir_explanation.svg"))
+}
+```
+
+## Figure 2
+
+```{r}
+#| label: fig-sircomp
+#| echo: false
+#| fig-cap: 'Sex-specific relative risk for SPLC in German lung cancer survivors'
+#| fig-cap-location: bottom
+#| fig-height: 6
+#| fig-width: 9
+
+knitr::include_graphics(file.path(output_dir_tables, "fig2.png"))
+```
+
+# References
+
+::: {#refs}
+:::
+
+# Footnotes
+
+## Research in context
+
+### Evidence before this study
+
+We searched PubMed for the terms "second primary cancer" (or synonyms) AND "lung" AND "incidence" for English studies published between January 1, 2010 and July 31, 2023.
+Lung cancer survivors are at an overall increased risk for developing a second primary cancer compared to the general population.
+Subsequent `r dic_tumor`s of the lung and bronchus are of particular importance because a large proportion of survivors are long-time smokers who continue smoking.
+Multiple studies have analyzed the Surveillance, Epidemiology, and End Results Program (SEER) data to provide insight into the risk of second primary lung cancer (SPLC) in lung cancer survivors.
+Only a few studies have published relative risk for SPLC outside the U.S.
+For some countries, e.g., Germany or the UK, published `r if(en_gb){"standardised"}else{"standardized"}` incidence ratios for SPLC after lung cancer are unexpectedly low and even suggest a risk reduction for diseased males compared to the general population.
+Further, researchers have highlighted methodological problems when analyzing risk of same-site second primary cancers, especially in cancer registries that use IARC multiple primary rules.
+
+### Added value of this study
+
+We newly developed the method of histological subtype-specific SIR that can reduce bias caused by using general population reference rates in determining the relative risk of same-site SPC for cancer registry data based on IARC/IACR MP rules.
+This study is the first nationwide analysis to provide reliable estimates of SPLC risk in German lung cancer survivors.
+It adds to the sparse international numbers, as PBCR-based estimates have only been published for the U.S. and England.
+
+### Implications of all the available evidence
+
+Our approach of using histology-specific reference rates improves SIR estimations and facilitates cross-country comparison, especially for PBCRs that apply IARC/IACR MP rules.
+Differing registration practices remain an obstacle when comparing relative risk for SPC across countries and over time.
+This analysis also highlights the need to improve the clarity of IARC/IACR MP rules that have not been updated since 2004 and do not reflect improvements in (more fine-grained) histological classification since then.
+
+## List of abbreviations
+
+CI: confidence interval
+
+E: expected cases
+
+IARC: International Agency for Research on Cancer
+
+IACR: International Association for Cancer Registration
+
+LC: lung cancer
+
+MP: multiple primaries
+
+O: observed cases
+
+PBCR: population-based cancer registry
+
+SEER: Surveillance, Epidemiology, and End Results Program
+
+SIR: standardized incidence ratio
+
+SIR~real~: assumed true SIR in reality
+
+SIR~simIARC~: simulated SIR when using international multiple primary rules
+
+SIR1~raw~: unadjusted SIR using the conventional method
+
+SIR2~sub~: proposed new method using histology-specific reference rates to calculate SIR
+
+SIR3~IARC~: unadjusted SIR using the conventional method and only counting international primaries for both observed and expected cases
+
+SIR4~subIARC~: applying the new method of histology-specific SIR and only counting international primaries
+
+SPLC: second primary lung cancer
+
+ZfKD: German Centre for Cancer Registry Data
+
+## CRediT authorship contribution statement
+
+Marian Eberl: Conceptualization; Methodology; Software; Formal Analysis; Data Curation; Writing -- original draft; Writing -- review and editing; Visualization
+
+Luana F Tanaka: Conceptualization; Methodology; Validation; Resources; Writing -- Original Draft; Writing -- review and editing
+
+Klaus Kraywinkel: Methodology; Validation; Resources; Writing -- review and editing; Supervision
+
+Stefanie J Klug: Conceptualization; Validation; Writing -- review and editing; Supervision
+
+## Data availability statement
+
+Due to legal restrictions, the individual-level raw data used for this analysis (i.e., German cancer registry data) is only available via request to the German Centre for Cancer Registry Data (ZfKD), which can provide a scientific use file.
+More information on the application process is provided on the ZfKD website (<https://www.krebsdaten.de/Krebs/EN/Content/ScientificUseFile/scientificusefile_node.html>).
+
+The validation dataset (i.e., U.S. cancer registry data) is publicly available via the Surveillance, Epidemiology, and End Results Program (SEER).
+More information on the data request process is provided on the SEER website (<https://seer.cancer.gov/data/access.html>).
+
+The authors of this paper strongly support open science and have therefore published both the analysis code and the newly programmed software to review and download under a GPL-3 license.
+The respective references are provided in the manuscript.
+
+Repository for analysis code: <https://github.com/marianschmidt/pub_spc_sirmethods>
+
+Repository for software code: <https://doi.org/10.5281/zenodo.5055870>
+
+## Funding
+
+This research received no specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
+
+## Competing interests
+
+The authors declare that they have no competing interests.
+
+## Ethics approval and consent to participate
+
+This study analyzed the scientific use file (SUF) of the German Centre for Cancer Registry Data (ZfKD).
+Data collection is mandated and regulated by the German Federal Law on Cancer Registration (BKRG), and secondary data analysis of the anonymous SUF -- as used in this study -- does not require ethics approval or consent by patients (§3 and §5 BKRG).
+
+The validation dataset (i.e., U.S. cancer registry data) is publicly available and de-identified and thus does not require ethics approval in accordance with local laws.
+
+## Acknowledgments
+
+We thank Gunther Schauberger (Technical University of Munich) for his review of the Statistical Analysis section and the Methods Supplement.
+
+# Supplementary information
+
+File: "Submission_Histology-specific SIR_Supplement S1-S11.pdf"
+
+Description: The Supplement contains all supplementary information in one PDF file.
+This includes 11 supplementary figures and tables consecutively numbered S1 to S11.
+
+**Table S1.** Comparison of IARC/IACR and SEER multiple primary rules
+**Table S2.** Details of dataset filtering
+**Table S3.** Details of data modifications
+**Table S4.** Data quality for included regions and SIR estimates
+**Table S5.** Conversion table of histology codes into ICD-O-3 histologically ‘different’ groups and histological subtypes of lung cancer
+**Methods S6.** Details on simulations to estimate the size of bias using standard SIR
+**Figure S7.** Histological groups of LC and SPLC
+**Table S8.** Frequency of same-histology SPLC by region
+**Table S9.** Sensitivity analysis A – Risk of SPLC using unadjusted and histology-specific SIR method [restricted to six German PBCR with low DCO rate]
+**Table S10.** Sensitivity analysis B – Risk of SPLC using unadjusted and histology-specific SIR method [SEER restricted to White population]
+**Figure S11.** Relative risk for SPLC in lung cancer survivors stratified by follow-up time
