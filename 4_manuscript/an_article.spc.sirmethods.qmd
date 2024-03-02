@@ -51,7 +51,7 @@ here::i_am("4_manuscript/an_article.spc.sirmethods.qmd")
 reload_workspace       <- TRUE # if TRUE, the analysis workspace will be
                               # reloaded, if FALSE, then prep chunk eval = FALSE
 input_dir_tables       <- here::here("3_output/all_figs_tabs")
-input_an_workspace     <- here::here("3_output/x5.10.an_sirmethods.publication2.RData")
+input_an_workspace     <- here::here("3_output/01.an_workspace.RData")
 output_dir_tables      <- here::here("3_output")
 
 ##---- Packages
