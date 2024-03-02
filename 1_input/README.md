@@ -9,6 +9,93 @@
   - ZfKD (not published, for access see below)
 - Incidence and reference rates for the United States: 
   - SEER (not published, for access see below)
+  
+### Used data sets and preparation scripts
+
+1.  **wide_spc_methods** *(Individual level cancer data (ZfKD + SEER data) in wide format):*
+
+    -   `r analysis_file_wide` (last modified: `r file.info(analysis_file_wide)$mtime`)
+
+    -   dependent on scripts:
+
+        -   01.cr_read.seer.dataset.R
+
+        -   03.cr_dm.seer.dataset.R
+
+        -   04.cr_save.seer.analysis.dataset.R
+
+        -   11.cr_read.zfkd.dataset.R
+
+        -   13.cr_dm.zfkd.dataset.R
+
+        -   14.cr_save.zfkd.analysis.dataset.R
+
+        -   81.01.cr_prefilter.methods.zfkd.R
+
+        -   81.02.cr_prefilter.methods.seer.R
+
+        -   81.03.cr_dm.save.methods.R
+
+2.  **wide_spc_methods_iarc** *(Individual level cancer data (ZfKD + SEER data) in wide format, only counting international primaries):*
+
+    -   `r analysis_file_wide2` (last modified: `r file.info(analysis_file_wide2)$mtime`)
+
+    -   dependent on scripts:
+
+        -   01.cr_read.seer.dataset.R
+
+        -   03.cr_dm.seer.dataset.R
+
+        -   04.cr_save.seer.analysis.dataset.R
+
+        -   11.cr_read.zfkd.dataset.R
+
+        -   13.cr_dm.zfkd.dataset.R
+
+        -   14.cr_save.zfkd.analysis.dataset.R
+
+        -   81.11.cr_prefilter.methods.iarc.zfkd.R
+
+        -   81.12.cr_prefilter.methods.iarc.seer.R
+
+        -   81.13.cr_dm.save.methods.R
+
+3.  **refrates_lungcancer_dco_calc** *(File with reference incidence rates for lung cancer, including DCO cases, calculated from registry data)*
+
+    -   `r rates_file1` (last modified: `r file.info(rates_file1)$mtime`
+
+    -   dependent on scripts:
+
+        -   57.cr_read.refrates.us.dco.R
+
+        -   83.05.cr_refrates.from.cohort.zfkd.dco.R
+
+        -   83.07.cr_refrates.merge.methods.R
+
+4.  **refrates_methods_lcsubtype_histgroupiarc_dco** *(File with reference incidence rates for subtypes of lung cancer, based on t_histgroupiarc, including DCO cases, calculated from registry data)*
+
+    -   `r rates_file2` (last modified: `r file.info(rates_file2)$mtime`)
+
+    -   dependent on scripts:
+
+        -   82.21.cr_refrates.by.lcsubtype.histgroupiarc.seer.R
+
+        -   82.22.cr_refrates.by.lcsubtype.histgroupiarc.zfkd.R
+
+        -   82.23.cr_refrates.by.lcsubtype.histgroupiarc.methods.R
+        
+5.  **refrates_methods_lcsubtype_histgroupiarc_iarc_dco** *(File with reference incidence rates for subtypes of lung cancer, based on t_histgroupiarc, including DCO cases, calculated from registry data; only counting cases that fulfill IARC/IACR MP Rules)*
+
+    -   `r rates_file3` (last modified: `r file.info(rates_file3)$mtime`)
+
+    -   dependent on scripts:
+
+        -   82.31.cr_refrates.by.lcsubtype.histgroupiarc.iarc.seer.R
+
+        -   82.22.cr_refrates.by.lcsubtype.zfkd.R
+
+        -   82.33.cr_refrates.by.lcsubtype.histgroupiarc.methods.iarc.R
+
 
 ## Raw data access
 

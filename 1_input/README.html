@@ -378,6 +378,89 @@ adjusted</li>
 <li>SEER (not published, for access see below)</li>
 </ul></li>
 </ul>
+<div id="used-data-sets-and-preparation-scripts" class="section level3">
+<h3>Used data sets and preparation scripts</h3>
+<ol style="list-style-type: decimal">
+<li><p><strong>wide_spc_methods</strong> <em>(Individual level cancer
+data (ZfKD + SEER data) in wide format):</em></p>
+<ul>
+<li><p><code>r analysis_file_wide</code> (last modified:
+<code>r file.info(analysis_file_wide)$mtime</code>)</p></li>
+<li><p>dependent on scripts:</p>
+<ul>
+<li><p>01.cr_read.seer.dataset.R</p></li>
+<li><p>03.cr_dm.seer.dataset.R</p></li>
+<li><p>04.cr_save.seer.analysis.dataset.R</p></li>
+<li><p>11.cr_read.zfkd.dataset.R</p></li>
+<li><p>13.cr_dm.zfkd.dataset.R</p></li>
+<li><p>14.cr_save.zfkd.analysis.dataset.R</p></li>
+<li><p>81.01.cr_prefilter.methods.zfkd.R</p></li>
+<li><p>81.02.cr_prefilter.methods.seer.R</p></li>
+<li><p>81.03.cr_dm.save.methods.R</p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>wide_spc_methods_iarc</strong> <em>(Individual level
+cancer data (ZfKD + SEER data) in wide format, only counting
+international primaries):</em></p>
+<ul>
+<li><p><code>r analysis_file_wide2</code> (last modified:
+<code>r file.info(analysis_file_wide2)$mtime</code>)</p></li>
+<li><p>dependent on scripts:</p>
+<ul>
+<li><p>01.cr_read.seer.dataset.R</p></li>
+<li><p>03.cr_dm.seer.dataset.R</p></li>
+<li><p>04.cr_save.seer.analysis.dataset.R</p></li>
+<li><p>11.cr_read.zfkd.dataset.R</p></li>
+<li><p>13.cr_dm.zfkd.dataset.R</p></li>
+<li><p>14.cr_save.zfkd.analysis.dataset.R</p></li>
+<li><p>81.11.cr_prefilter.methods.iarc.zfkd.R</p></li>
+<li><p>81.12.cr_prefilter.methods.iarc.seer.R</p></li>
+<li><p>81.13.cr_dm.save.methods.R</p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>refrates_lungcancer_dco_calc</strong> <em>(File with
+reference incidence rates for lung cancer, including DCO cases,
+calculated from registry data)</em></p>
+<ul>
+<li><p><code>r rates_file1</code> (last modified:
+<code>r file.info(rates_file1)$mtime</code></p></li>
+<li><p>dependent on scripts:</p>
+<ul>
+<li><p>57.cr_read.refrates.us.dco.R</p></li>
+<li><p>83.05.cr_refrates.from.cohort.zfkd.dco.R</p></li>
+<li><p>83.07.cr_refrates.merge.methods.R</p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>refrates_methods_lcsubtype_histgroupiarc_dco</strong>
+<em>(File with reference incidence rates for subtypes of lung cancer,
+based on t_histgroupiarc, including DCO cases, calculated from registry
+data)</em></p>
+<ul>
+<li><p><code>r rates_file2</code> (last modified:
+<code>r file.info(rates_file2)$mtime</code>)</p></li>
+<li><p>dependent on scripts:</p>
+<ul>
+<li><p>82.21.cr_refrates.by.lcsubtype.histgroupiarc.seer.R</p></li>
+<li><p>82.22.cr_refrates.by.lcsubtype.histgroupiarc.zfkd.R</p></li>
+<li><p>82.23.cr_refrates.by.lcsubtype.histgroupiarc.methods.R</p></li>
+</ul></li>
+</ul></li>
+<li><p><strong>refrates_methods_lcsubtype_histgroupiarc_iarc_dco</strong>
+<em>(File with reference incidence rates for subtypes of lung cancer,
+based on t_histgroupiarc, including DCO cases, calculated from registry
+data; only counting cases that fulfill IARC/IACR MP Rules)</em></p>
+<ul>
+<li><p><code>r rates_file3</code> (last modified:
+<code>r file.info(rates_file3)$mtime</code>)</p></li>
+<li><p>dependent on scripts:</p>
+<ul>
+<li><p>82.31.cr_refrates.by.lcsubtype.histgroupiarc.iarc.seer.R</p></li>
+<li><p>82.22.cr_refrates.by.lcsubtype.zfkd.R</p></li>
+<li><p>82.33.cr_refrates.by.lcsubtype.histgroupiarc.methods.iarc.R</p></li>
+</ul></li>
+</ul></li>
+</ol>
+</div>
 </div>
 <div id="raw-data-access" class="section level2">
 <h2>Raw data access</h2>
