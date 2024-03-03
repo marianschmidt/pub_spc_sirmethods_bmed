@@ -130,55 +130,6 @@ Marian Eberl, MSc, ^a,\*^ Luana F Tanaka, PhD, ^a^ Klaus Kraywinkel, MD, ^b^ Pro
 
 Histology-specific standardized incidence ratio improves the estimation of second primary lung cancer risk
 
-# Journals
-
--   rejected: Lancet Oncology (IF 51.1, Elsevier, Fees für OA (nicht Pflicht): 6300 USD)
-
--   rejected: Journal of Clinical Oncology (IF 45.6, ASCO, free after 12 months, fees for OA (nicht Pflicht): 5000 USD, Article Type: Statistics in Oncology 4000 words)
-
--   rejected: Journal of Hematology & Oncology (IF 28.5, BMC, 4 days, OA für TUM kostenlos)
-
--   rejected: Journal of Thoracic Oncology (IF 20.1, Elsevier, 7 days, Fees für OA (nicht Pflicht): 4000 USD)
-
--   BMJ Thorax (IF 10.0, 2 days to first decision, 46 days to decision with reviews, Fees für Open Access (nicht Pflicht): 3090 GBP plus VAT)
-
--   rejected: Journal of the National Cancer Institute (IF 10.3, Oxford, 3000 words, Fees für OA (nicht Pflicht): 5000 USD)
-
--   BMC Medicine (IF 9.2, 9 days, SpringerNature, OA für TUM kostenlos)
-
--   International Journal of Cancer (IF 6.4, Q1 Oncology, Wiley, OA für TUM kostenlos, 5000 words)
-
--   British Journal of Cancer (If 8.8, 7 days, SpringerNature, OA für TUM kostenlos)
-
--   BMC Medical Research Methodology (IF 4.60, Q1 Epi, 48 days to decision, SpringerNature, OA für TUM kostenlos)
-
--   Journal of Cancer Research and Clinical Oncology (IF 3.6, Q1 Medicine, Q2 Oncology, 4 days to first decision, Springer, OA für TUM kostenlos)
-
--   Lung Cancer (IF 5.3, Elsevier, 21 days, Fees for OA (nicht Pflicht): 3110 EUR)
-
--   PLOS One (IF 3.8, Q1 Multidisciplinary, 16 days to editorial decision, OA für TUM kostenlos)
-
-### Suggested reviewers
-
--   Hyuna Sung, PhD: Senior Principal Scientist, Cancer Surveillance Research, American Cancer Society, hyuna.sung\@cancer.org.
-    Hyuna Sung is an experienced cancer epidemiologist with multiple publications in the field of second primary cancer.
-    Her research is positioned to identify emerging cancer trends as well as high-risk populations.
-    She is well experienced in the applied methodology and could provide valuable feedback on the manuscript.
-
--   Eric Adjei Boakye, PhD, MA: [eadjeiboakye49\@siumed.edu](mailto:eadjeiboakye49@siumed.edu), Assistant Professor, Southern Illinois University School of Medicine, Dr. Boakye is an experienced analyst of cancer registry data and has previously published on risk and burden of second primary malignancy among survivors of smoking-related cancers in the United States
-
--   Omar M Abdel-Rahman, MD, PhD: [omar.abdelsalam\@ahs.ca](mailto:omar.abdelsalam@ahs.ca), Assistant Professor, University of Alberta Faculty of Medicine & Dentistry, Department of Oncology; Dr. Abdel-Rahman is an experienced oncologist who has previously published subsequent thoracic cancers among patients diagnosed with lung cancer.
-
--   Antoinette Wozniak, MD: wozniakaj\@upmc.edu, Director, Lung Cancer Disease Unit, University of Pittsburgh School of Medicine, Division of Hematology/Oncology, Dr. Wozniak is an experienced clinical oncologist and with a focus of clinical research in lung cancer, and mesothelioma, Dr. Wozniak also previously collaborated on observational and secondary data analysis focused studies of lung cancer and therefore could review this paper both from a clinical as well as from a methodological perspective.
-
--   researchers who have previously avoided calculating same-site SIR (e.g., from (1))
-
--   suggested reviewers from paper 1
-
--   someone from IARC who is interested in updating IARC MP rules or has worked on methods
-
--   someone from SEER who has worked on Methods, MP rules
-
 # Author information
 
 Marian Eberl: Chair of Epidemiology, TUM School of Medicine and Health, Technical University of Munich, Munich, Germany, <https://orcid.org/0000-0001-6584-3197>, marian.eberl\@tum.de
@@ -765,28 +716,6 @@ knitr::include_graphics(file.path(output_dir_tables, "fig2.png"))
 # Footnotes
 
 ## Research in context
-
-### Evidence before this study
-
-We searched PubMed for the terms "second primary cancer" (or synonyms) AND "lung" AND "incidence" for English studies published between January 1, 2010 and July 31, 2023.
-Lung cancer survivors are at an overall increased risk for developing a second primary cancer compared to the general population.
-Subsequent `r dic_tumor`s of the lung and bronchus are of particular importance because a large proportion of survivors are long-time smokers who continue smoking.
-Multiple studies have analyzed the Surveillance, Epidemiology, and End Results Program (SEER) data to provide insight into the risk of second primary lung cancer (SPLC) in lung cancer survivors.
-Only a few studies have published relative risk for SPLC outside the U.S.
-For some countries, e.g., Germany or the UK, published `r if(en_gb){"standardised"}else{"standardized"}` incidence ratios for SPLC after lung cancer are unexpectedly low and even suggest a risk reduction for diseased males compared to the general population.
-Further, researchers have highlighted methodological problems when analyzing risk of same-site second primary cancers, especially in cancer registries that use IARC multiple primary rules.
-
-### Added value of this study
-
-We newly developed the method of histological subtype-specific SIR that can reduce bias caused by using general population reference rates in determining the relative risk of same-site SPC for cancer registry data based on IARC/IACR MP rules.
-This study is the first nationwide analysis to provide reliable estimates of SPLC risk in German lung cancer survivors.
-It adds to the sparse international numbers, as PBCR-based estimates have only been published for the U.S. and England.
-
-### Implications of all the available evidence
-
-Our approach of using histology-specific reference rates improves SIR estimations and facilitates cross-country comparison, especially for PBCRs that apply IARC/IACR MP rules.
-Differing registration practices remain an obstacle when comparing relative risk for SPC across countries and over time.
-This analysis also highlights the need to improve the clarity of IARC/IACR MP rules that have not been updated since 2004 and do not reflect improvements in (more fine-grained) histological classification since then.
 
 ## List of abbreviations
 
