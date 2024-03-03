@@ -158,23 +158,6 @@
       "Repository": "CRAN",
       "Hash": "b7d8d8ee39869c18d8846a184dd8a1af"
     },
-    "bookdown": {
-      "Package": "bookdown",
-      "Version": "0.37",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "R",
-        "htmltools",
-        "jquerylib",
-        "knitr",
-        "rmarkdown",
-        "tinytex",
-        "xfun",
-        "yaml"
-      ],
-      "Hash": "b1b1c3be5c75309f6107726fa58ee20c"
-    },
     "brio": {
       "Package": "brio",
       "Version": "1.1.4",
