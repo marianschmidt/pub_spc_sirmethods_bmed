@@ -634,7 +634,7 @@ if(knitr::pandoc_to("docx")){
   
   tab1_gt$`_heading`$subtitle
   
-  knitr::include_graphics(file.path(output_dir_tables, "tab1.png"))
+  knitr::include_graphics(file.path(input_dir_tables, "tab1.png"))
   
 }else{
    
@@ -654,7 +654,7 @@ if(knitr::pandoc_to("docx")){
 ```{r}
 #| label: tab-sim
 if(knitr::pandoc_to("docx")){
-  knitr::include_graphics(file.path(output_dir_tables, "tab2.png"))
+  knitr::include_graphics(file.path(input_dir_tables, "tab2.png"))
 }else{
   tab2_gt
 }
@@ -668,7 +668,7 @@ if(knitr::pandoc_to("docx")){
 
 if(knitr::pandoc_to("docx")){
   
-  knitr::include_graphics(file.path(output_dir_tables, "tab3.png"))
+  knitr::include_graphics(file.path(input_dir_tables, "tab3.png"))
   
 }else{
  
@@ -688,10 +688,10 @@ if(knitr::pandoc_to("docx")){
 
 if(knitr::pandoc_to("docx")){
   
-  knitr::include_graphics(file.path(output_dir_tables, "fig1_sir_explanation.png"))
+  knitr::include_graphics(file.path(input_dir_tables, "fig1_alternative_sir_explanation.png"))
   
 }else{
-  knitr::include_graphics(file.path(output_dir_tables, "fig1_sir_explanation.svg"))
+  knitr::include_graphics(file.path(input_dir_tables, "fig1_alternative_sir_explanation.svg"))
 }
 ```
 
@@ -705,7 +705,7 @@ if(knitr::pandoc_to("docx")){
 #| fig-height: 6
 #| fig-width: 9
 
-knitr::include_graphics(file.path(output_dir_tables, "fig2.png"))
+knitr::include_graphics(file.path(input_dir_tables, "fig2.png"))
 ```
 
 # References
