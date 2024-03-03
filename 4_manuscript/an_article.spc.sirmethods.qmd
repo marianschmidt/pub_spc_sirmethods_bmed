@@ -642,7 +642,7 @@ if(knitr::pandoc_to("docx")){
   #define variables needed to render gt table
   rows_ci <- c(2, 24:25) #helper for rows with CIs
   rh <- 80   #row height in px
-  output_dir_name <- "3_output" #output_dir name for graphs
+  output_dir_name <- "3_output/all_figs_tabs" #output_dir name for graphs
   
   #print table
   tab1_gt
