@@ -14,7 +14,7 @@
 
 1.  **wide_spc_methods** *(Individual level cancer data (ZfKD + SEER data) in wide format):*
 
-    -   `r analysis_file_wide` (last modified: `r file.info(analysis_file_wide)$mtime`)
+    -   `1_input/81.spn.dataset.methods.wide.RData` (last modified: `r file.info(analysis_file_wide)$mtime`)
 
     -   dependent on scripts:
 
@@ -38,7 +38,7 @@
 
 2.  **wide_spc_methods_iarc** *(Individual level cancer data (ZfKD + SEER data) in wide format, only counting international primaries):*
 
-    -   `r analysis_file_wide2` (last modified: `r file.info(analysis_file_wide2)$mtime`)
+    -   `1_input/83.spn.dataset.methods.iarc.wide.RData` (last modified: `r file.info(analysis_file_wide2)$mtime`)
 
     -   dependent on scripts:
 
@@ -62,7 +62,7 @@
 
 3.  **refrates_lungcancer_dco_calc** *(File with reference incidence rates for lung cancer, including DCO cases, calculated from registry data)*
 
-    -   `r rates_file1` (last modified: `r file.info(rates_file1)$mtime`
+    -   `1_input/58.refrates.methods.lungcancer.dco.calculated.RData` (last modified: `r file.info("1_input/58.refrates.methods.lungcancer.dco.calculated.RData")$mtime`
 
     -   dependent on scripts:
 
@@ -74,7 +74,7 @@
 
 4.  **refrates_methods_lcsubtype_histgroupiarc_dco** *(File with reference incidence rates for subtypes of lung cancer, based on t_histgroupiarc, including DCO cases, calculated from registry data)*
 
-    -   `r rates_file2` (last modified: `r file.info(rates_file2)$mtime`)
+    -   `1_input/82.02.rates.lc.subtype.histgroupiarc.methods.dco.RData` (last modified: `r file.info(rates_file2)$mtime`)
 
     -   dependent on scripts:
 
@@ -86,7 +86,7 @@
         
 5.  **refrates_methods_lcsubtype_histgroupiarc_iarc_dco** *(File with reference incidence rates for subtypes of lung cancer, based on t_histgroupiarc, including DCO cases, calculated from registry data; only counting cases that fulfill IARC/IACR MP Rules)*
 
-    -   `r rates_file3` (last modified: `r file.info(rates_file3)$mtime`)
+    -   `1_input/82.03.rates.lc.subtype.histgroupiarc.methods.iarc.dco.RData` (last modified: `r file.info(rates_file3)$mtime`)
 
     -   dependent on scripts:
 
