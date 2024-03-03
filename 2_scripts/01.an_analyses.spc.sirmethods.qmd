@@ -21,7 +21,7 @@ number-sections: false
 #| include: false
 #| warning: true
 
-# project:      SPN - Data Analysis  
+# project:      SPC - Data Analysis  
 # script:       01.an_analyses.spc.sirmethods.qmd  
 # author:       Marian Eberl  
 # recent date:  2024-03-01  
