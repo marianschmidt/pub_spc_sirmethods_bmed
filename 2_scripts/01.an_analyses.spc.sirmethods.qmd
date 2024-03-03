@@ -66,7 +66,8 @@ dm_file                <- here::here("1_input/pub2_data_modifications.xlsx")
 reload_workspace       <- FALSE
 input_workspace        <- list("")
 
-output_dir_tables      <- here::here("3_output/all_figs_tabs")
+output_dir_tables_name <- "3_output/all_figs_tabs"
+output_dir_tables      <- here::here(output_dir_tables_name)
 
 save_workspace         <- TRUE
 output_workspace       <- here::here("3_output/01.an_workspace.RData")
@@ -1093,111 +1094,6 @@ d_mismatch <- wide_spc_methods %>%
 tmp_pids %>%
   count(inclusion)
 ```
-
-## Reference Rates
-
-### Refrates LC overall DCO calculated
-
-```{r}
-refrates_lungcancer_dco_calc %>%
-  head()
-```
-
-### Refrates LC subtype (t_histgroupiarc) DCO
-
-```{r}
-refrates_methods_lcsubtype_histgroupiarc_dco  %>%
-  tidytable::summarize(min_ci = min(incidence_crude_rate, na.rm = TRUE),
-                       max_ci = max(incidence_crude_rate, na.rm = TRUE),
-                       sum_cases = sum(incidence_cases),
-                       .by = t_lcsubtype)
-```
-
-### Refrates LC subtype (t_histgroupiarc) IARC DCO
-
-```{r}
-refrates_methods_lcsubtype_histgroupiarc_iarc_dco  %>%
-  tidytable::filter(race != "Other") %>%
-  tidytable::summarize(min_ci = min(incidence_crude_rate, na.rm = TRUE),
-                       max_ci = max(incidence_crude_rate, na.rm = TRUE),
-                       sum_cases = sum(incidence_cases),
-                       .by = t_lcsubtype)
-```
-
-
-#### Check Refrates t_histroupiarc
-
-```{r}
-test1 <- refrates_methods_lcsubtype_histgroupiarc_dco %>% 
-  mutate(region = as.character(region)) %>%
-  filter(t_lcsubtype == "Total - All histological subtypes" & 
-           !str_detect(sex, "^Total") & 
-           !str_detect(age, "^Total") & 
-           !str_detect(race, "Unknown") & 
-           !age %in% c("00 - 04", "05 - 09","10 - 14", "15 - 19", "20 - 24", "25 - 29") & 
-           !region %in% c("DE1 Baden-Wuerttemberg", "DE2 Bavaria", "DE5 Bremen",  "DE7 Hesse", 
-                          "DE9 Lower Saxony", "DEA North Rhine-Westphalia", "DEA3 Muenster", 
-                          "DEB Rhineland-Palatinate", "DEC Saarland ", "DEF Schleswig-Holstein", 
-                          "SEER Reg 29 - Alaska Natives", "SEER Reg 43 - Louisiana", 
-                          "SEER Reg 37 - Rural Georgia")) %>% 
-  select(-reg, -t_lcsubtype, -population_n_per_year) %>% 
-  arrange(region, year, sex, age, race) %>% as_tibble()
-
-test2 <- refrates_lungcancer_dco_calc %>% 
-  mutate(t_site = as.character(t_site),
-         region = as.character(region)) %>% 
-  filter(!age %in% c("00 - 04", "05 - 09","10 - 14", "15 - 19", "20 - 24", "25 - 29") & 
-           year != "1970 - 1974" &
-           !str_detect(race, "Unknown") & 
-           !region %in% c("DE1 Baden-Wuerttemberg", "DE2 Bavaria","DE5 Bremen",  "DE7 Hesse", 
-                          "DE9 Lower Saxony", "DEA North Rhine-Westphalia", "DEA3 Muenster", 
-                          "DEB Rhineland-Palatinate", "DEC Saarland ", "DEF Schleswig-Holstein", 
-                          "SEER Reg 29 - Alaska Natives", "SEER Reg 43 - Louisiana", 
-                          "SEER Reg 37 - Rural Georgia")) %>% 
-  select(-comment, -population_n_per_year) %>% relocate(race, .after = age) %>% 
-  arrange(region, year, sex, age, race) %>% as_tibble()
-
-waldo::compare(test1, test2, ignore_attr = TRUE)
-```
-
-
-```{r}
-testthat::test_that(
-  "Overall rates from lcsubtype and refrates_lungcancer should be the same",
-  testthat::expect_equivalent(
-    refrates_methods_lcsubtype_histgroupiarc_dco %>% 
-      mutate(region = as.character(region)) %>%
-      filter(t_lcsubtype == "Total - All histological subtypes" & 
-               !str_detect(sex, "^Total") & 
-               !str_detect(age, "^Total") & 
-               !str_detect(race, "Unknown") & 
-               !age %in% c("00 - 04", "05 - 09","10 - 14", "15 - 19", "20 - 24", "25 - 29") & 
-               !region %in% c("DE1 Baden-Wuerttemberg", "DE2 Bavaria", "DE5 Bremen",  "DE7 Hesse",
-                              "DE9 Lower Saxony", "DEA North Rhine-Westphalia", "DEA3 Muenster",
-                              "DEB Rhineland-Palatinate", "DEC Saarland", "DEF Schleswig-Holstein",
-                              "SEER Reg 29 - Alaska Natives", "SEER Reg 43 - Louisiana", 
-                              "SEER Reg 37 - Rural Georgia")) %>% 
-      select(-reg, -t_lcsubtype, -population_n_per_year) %>%    
-      arrange(region, year, sex, age, race) %>% as_tibble(),
-    
-    refrates_lungcancer_dco_calc %>% 
-      mutate(t_site = as.character(t_site),
-             region = as.character(region)) %>% 
-      filter(!age %in% c("00 - 04", "05 - 09","10 - 14", "15 - 19", "20 - 24", "25 - 29") & 
-               year != "1970 - 1974" &
-               !str_detect(race, "Unknown") & 
-               !region %in% c("DE1 Baden-Wuerttemberg", "DE2 Bavaria", "DE5 Bremen",  "DE7 Hesse",
-                              "DE9 Lower Saxony", "DEA North Rhine-Westphalia", "DEA3 Muenster",
-                              "DEB Rhineland-Palatinate", "DEC Saarland", "DEF Schleswig-Holstein",
-                              "SEER Reg 29 - Alaska Natives", "SEER Reg 43 - Louisiana", 
-                              "SEER Reg 37 - Rural Georgia")) %>% 
-      select(-comment, -population_n_per_year) %>% relocate(race, .after = age) %>% 
-      arrange(region, year, sex, age, race) %>% as_tibble(),
-    
-    tolerance = 0.005
-    ))
-```
-
 
 
 # Analyses
@@ -5196,7 +5092,7 @@ rows_ci <- c(2, 24:25)
 #parameters of plot column
 rh <- 70   #row height in px
 #output_dir name for graphs
-output_dir_name <- "output/pub2_files"
+output_dir_name <- output_dir_tables_name
 
 ##create table with gt
 #to merge variables https://gt.rstudio.com/reference/text_transform.html
@@ -5687,35 +5583,11 @@ tab3_pt3 <- res_sum_sir_byyear %>%
               names_glue = "{registry}.{method}.{.value}")
 ```
 
-### Plots for Tab3
-
-```{r}
-#test plot_sir_dotplot
-
-test_df <- tibble(
-  cat = c("a", "b", "c", "d", "e"),
-  sir_1 = c(0.1, 0.4, 0.8, 2, 5),
-  plot_sir_1 = c(0.1, 0.4, 0.8, 2, 5), 
-  sir_2 = c(0.3, 0.8, 2.8, 3, 2.5),
-  sir_3 = c(0.8, 1.4, 1.8, 5, 1),
-  sir_4 = c(0.9, 1.4, 1.8, 5, 1)
-  )
-
-test_df %>%
-  gt() %>%
-  plot_gt_sircomp_dotplot(var1 = plot_sir_1, var2 = sir_2, var3 = sir_3,
-                          label_x1 = paste("SIR1", x1),
-                          label_x2 = "",
-                          label_x3 = "SIR US",
-                          x_max = 5)
-  
-
-```
-
 
 ### Tab3: Put parts together
 
 ```{r}
+
 tab3 <- tab3_pt1 %>%
   bind_rows(tab3_pt2) %>%
   bind_rows(tab3_pt3) %>%
@@ -6001,6 +5873,7 @@ fig2 <- res_sum_sir %>%
        subtitle = fig2_subtitle,
        caption = fig2_caption) +
   theme(
+    legend.position = "bottom",
     legend.text = ggtext::element_markdown(),
     plot.title = ggtext::element_markdown(),
     plot.subtitle = ggtext::element_markdown(size = 9),
@@ -7466,9 +7339,6 @@ fig_splot_4 <- res_sum_sir %>%
                     , vlab_x_off = -0.38, vlab_y_pos = 0.5, vlab_y_diff = .1, colors_sex = colors_2_sex
                     )
 
-
-fig_splot_1
-fig_splot_2
 ```
 #### Put parts together
 
