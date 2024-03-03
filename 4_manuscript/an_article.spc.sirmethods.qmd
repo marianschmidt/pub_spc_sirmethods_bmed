@@ -24,6 +24,7 @@ format:
     code-tools: true
     code-overflow: wrap
     embed-resources: true
+    self-contained-math: true
     df-print: paged
  docx: 
     echo: false
