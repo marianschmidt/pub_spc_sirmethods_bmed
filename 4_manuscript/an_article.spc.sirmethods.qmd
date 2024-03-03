@@ -777,7 +777,7 @@ More information on the data request process is provided on the SEER website (<h
 The authors of this paper strongly support open science and have therefore published both the analysis code and the newly programmed software to review and download under a GPL-3 license.
 The respective references are provided in the manuscript.
 
-Repository for analysis code: <https://github.com/marianschmidt/pub_spc_sirmethods>
+Repository for analysis code: <https://github.com/marianschmidt/pub_spc_sirmethods_bmed>
 
 Repository for software code: <https://doi.org/10.5281/zenodo.5055870>
 
