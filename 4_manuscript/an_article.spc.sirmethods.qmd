@@ -796,6 +796,10 @@ Data collection is mandated and regulated by the German Federal Law on Cancer Re
 
 The validation dataset (i.e., U.S. cancer registry data) is publicly available and de-identified and thus does not require ethics approval in accordance with local laws.
 
+## Consent to publish
+
+Not applicable.
+
 ## Acknowledgments
 
 We thank Gunther Schauberger (Technical University of Munich) for his review of the Statistical Analysis section and the Methods Supplement.
