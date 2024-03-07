@@ -24,7 +24,6 @@ format:
     code-tools: true
     code-overflow: wrap
     embed-resources: true
-    self-contained-math: true
     df-print: paged
  docx: 
     echo: false
@@ -38,6 +37,9 @@ keywords:
 number-sections: false
 bibliography: pub_spc_sirmethods.bib
 csl: bmc-medicine.csl
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r}
@@ -47,7 +49,7 @@ csl: bmc-medicine.csl
 #----- Set basic parameters
 
 ##---- Files
-here::i_am("4_manuscript/an_article.spc.sirmethods.qmd")
+here::i_am("4_manuscript/an_article.spc.sircmethods.qmd")
 
 reload_workspace       <- TRUE # if TRUE, the analysis workspace will be
                               # reloaded, if FALSE, then prep chunk eval = FALSE
@@ -143,9 +145,7 @@ Stefanie J. Klug: Chair of Epidemiology, TUM School of Medicine and Health, Tech
 
 # Address for correspondence
 
-Marian Eberl, Chair of Epidemiology, TUM School of Medicine and Health, Technical University of Munich, Georg-Brauchle-Ring 56, 80992 München, Germany,
-marian.eberl@tum.de
-
+Marian Eberl, Chair of Epidemiology, TUM School of Medicine and Health, Technical University of Munich, Georg-Brauchle-Ring 56, 80992 München, Germany, marian.eberl\@tum.de
 
 # Abstract {#abstract}
 
@@ -255,18 +255,22 @@ This bias occurs because the count for O excludes same-histology SPLC, while the
 Our first simulation setting is that the baseline risk of LC survivors to develop an SPLC is the same as that for the general population ($SIR_{real}=1.0$).
 We determined the proportions of histologically different LC groups $p_{hist_j}$ in the analysis dataset for all index LC cases stratified by sex and assumed that the SPLC would have the same histology group distribution as for the first cancer.
 To obtain the simulated $SIR_{simIARC}$, we multiplied each stratum of obtained expected numbers with a sex- and histology-group correction factor $x_{hist_j} = 1-p_{hist_j}$ for combinations of LC and SPLC that are not possible in our observed cases.
-In addition to the scenario of no risk difference, we also simulate the impact of this bias when SPLC risk for LC survivors is double that of the general population ($SIR_{real}=2.0$) and a risk increase equivalent to data published by Thakur et al. for U.S. male  ($SIR_{real}=3.38$) and female ($SIR_{real}=4.85$) LC survivors [@thakurRiskSecondLung2018].
+In addition to the scenario of no risk difference, we also simulate the impact of this bias when SPLC risk for LC survivors is double that of the general population ($SIR_{real}=2.0$) and a risk increase equivalent to data published by Thakur et al. for U.S. male ($SIR_{real}=3.38$) and female ($SIR_{real}=4.85$) LC survivors [@thakurRiskSecondLung2018].
 Further details on the simulations can be found in Supplement S6.
 
 ### ii) Calculating a histology-specific SIR
 
 To calculate the conventional SIR (ratio of observed to expected SPLC cases), referred to as SIR1~raw~, we used age-, sex-, region- and period-specific general reference rates obtained from the full sample of German PBCR data, including cases with a diagnosis based on a death certificate only (DCO).
 
-Next, we propose a novel method to stratify SIR calculations by histology group of LC (e.g., adenocarcinomas) and use group-specific reference rates excluding same-histology SPLC. The concepts of the conventional SIR1~raw~ and the newly proposed histological subtype-specific SIR2~sub~ are explained in [Figure 1]. Most importantly, calculating histological subtype-specific SIR removes the discrepancy in the conventional method of excluding same-histology group `r dic_tumor`s from the observed count (O) - due to IARC/IACR MP rules - while including those same-histology `r dic_tumor`s in the reference rates, i.e. expected cases.
-When calculating the SIR2~sub~, we always stratified by the histology group of the first `r dic_tumor`. Then, we used histology-specific reference rates $IR_{ij}$ that excluded the same histology group from the incidence.
+Next, we propose a novel method to stratify SIR calculations by histology group of LC (e.g., adenocarcinomas) and use group-specific reference rates excluding same-histology SPLC.
+The concepts of the conventional SIR1~raw~ and the newly proposed histological subtype-specific SIR2~sub~ are explained in [Figure 1].
+Most importantly, calculating histological subtype-specific SIR removes the discrepancy in the conventional method of excluding same-histology group `r dic_tumor`s from the observed count (O) - due to IARC/IACR MP rules - while including those same-histology `r dic_tumor`s in the reference rates, i.e. expected cases.
+When calculating the SIR2~sub~, we always stratified by the histology group of the first `r dic_tumor`.
+Then, we used histology-specific reference rates $IR_{ij}$ that excluded the same histology group from the incidence.
 In settings where same-histology SPCs occur in the data (i.e., PBCR not applying IARC/IACR MP rules), those cancers are not counted as observed.
 
-Finally, for all SIR, we aggregated $O$ and $E$ for the total available follow-up from six months to a maximum of 13 years and always reported sex-specific estimates. We calculated 95% confidence intervals (CIs) as described by Breslow and Day [@breslow1987].
+Finally, for all SIR, we aggregated $O$ and $E$ for the total available follow-up from six months to a maximum of 13 years and always reported sex-specific estimates.
+We calculated 95% confidence intervals (CIs) as described by Breslow and Day [@breslow1987].
 
 ### iii) Validation analysis using SEER data
 
@@ -560,7 +564,9 @@ Using this method, the risk of being diagnosed with an SPLC was `r res_splc_f_si
 These numbers are substantially higher than previously published unadjusted SIR estimates using the standard approach (i.e., 2.06 and 0.83 for female and male LC survivors, respectively) [@eberlIncidence2022].
 
 Our validation analysis showed that the risk estimates for SPLC under SEER MP rules and the risk under IARC/IACR MP rules converge when using the proposed histology-specific compared to the standard approach.
-Moreover, the SPLC risk in Germany and the U.S. became comparable under the new method. In the descriptive analysis we observed a similar incidence of primary LC, but an eight times higher crude incidence of SPLC in the U.S. compared to Germany, due to different registration rules and population structure. We narrowed this gap to an about 2-fold increased risk in the most comparable setting of histology-specific SIR counting international primaries only.
+Moreover, the SPLC risk in Germany and the U.S. became comparable under the new method.
+In the descriptive analysis we observed a similar incidence of primary LC, but an eight times higher crude incidence of SPLC in the U.S. compared to Germany, due to different registration rules and population structure.
+We narrowed this gap to an about 2-fold increased risk in the most comparable setting of histology-specific SIR counting international primaries only.
 Thus, we showed that the proposed histology-specific method makes the SIR metric more robust against differing or unclear MP rules and, therefore, more suitable for cross-country comparisons.
 
 With the availability of long-term cancer registry data from SEER, relative risk estimates and survival analyses were predominantly published for the U.S.
@@ -574,7 +580,7 @@ For Germany, we observed that using histology-specific calculation of risk for S
 The previously published risk reduction for male LC survivors [@eberlIncidence2022] turns into a risk increase in our updated analysis.
 Similarly, for the most frequent subtypes of LC, the risk of SPLC increases from a protective or null effect to a significant risk increase for LC survivors compared to the general population.
 In line with previous findings from Germany, the U.S., and England, females have a higher relative risk for SPLC than males [@eberlIncidence2022; @barclayIncidenceSecondHigher2019; @thakurRiskSecondLung2018].
-The results of bias simulation apply to other PBCRs using IARC/IACR MP rules because they depend only on the distribution of histology groups, which are similar across countries [@canceri2023].
+The results of bias simulation apply to other PBCRs using IARC/IACR MP rules because they depend only on the distribution of histology groups, which are similar across countries [@canceri2021a].
 
 The SIR is an established measure in cancer epidemiology and beyond to identify at-risk populations and test etiologic hypotheses [@newmali2006].
 However, our analysis revealed the problem that the SIR metric can be seriously biased when observed and expected counts are based on different logics.
@@ -606,7 +612,8 @@ We newly developed the method of histological subtype-specific SIR that can redu
 The method increases the comparability of SIR across countries; when different MP rules are applied, information on registration practices is missing, or registration practices vary over time within a single PBCR.
 Furthermore, our study is the first to compare the relative risk of SPLC between Germany and the U.S. and provide estimates that allow SEER data to be used in international comparison.
 
-Our proposed method has several limitations. In the situation in which PBCR data is incomplete, i.e., incident SPCs are not recorded in the registry, the proposed method still underestimates the SIR.
+Our proposed method has several limitations.
+In the situation in which PBCR data is incomplete, i.e., incident SPCs are not recorded in the registry, the proposed method still underestimates the SIR.
 This is especially relevant for IARC-compliant registries where SPCs are not recorded if the histology of the index `r dic_tumor` is unspecified.
 Moreover, the method works best for cancer entities that show a uniform distribution of incidence across histological subtypes.
 For example, the subtype is not informative in breast cancer, where adenocarcinoma comprises more than 90% of all malignancies.
@@ -619,8 +626,10 @@ This could be an underestimation of risk if the true SIR of same-histology SPLC 
 
 In this study, we newly developed a method of histological subtype-specific SIR that can reduce bias when estimating the relative risk of same-site SPC.
 Our study shows that estimations for the relative risk of SPLC after LC are heavily influenced by differing registration practices for multiple primaries and how data is analyzed.
-Our approach of using histology-specific reference rates improves SIR estimations and facilitates cross-country comparison, especially for PBCRs that apply IARC/IACR MP rules. Future research can use this method to update epidemiological data, allowing clinicians to make informed decisions about patients' SPLC risk based on accurate temporal and regional incidence trends.
-Differing registration practices remain an obstacle when comparing relative risk for SPC across countries and over time. Therefore, it should be further evaluated how MP rules and methods to determine SPC risk in the same location can be harmonized.
+Our approach of using histology-specific reference rates improves SIR estimations and facilitates cross-country comparison, especially for PBCRs that apply IARC/IACR MP rules.
+Future research can use this method to update epidemiological data, allowing clinicians to make informed decisions about patients' SPLC risk based on accurate temporal and regional incidence trends.
+Differing registration practices remain an obstacle when comparing relative risk for SPC across countries and over time.
+Therefore, it should be further evaluated how MP rules and methods to determine SPC risk in the same location can be harmonized.
 
 # Figures and Tables
 
@@ -808,14 +817,4 @@ File: "Submission_Histology-specific SIR_Supplement S1-S11.pdf"
 Description: The Supplement contains all supplementary information in one PDF file.
 This includes 11 supplementary figures and tables consecutively numbered S1 to S11.
 
-**Table S1.** Comparison of IARC/IACR and SEER multiple primary rules
-**Table S2.** Details of dataset filtering
-**Table S3.** Details of data modifications
-**Table S4.** Data quality for included regions and SIR estimates
-**Table S5.** Conversion table of histology codes into ICD-O-3 histologically ‘different’ groups and histological subtypes of lung cancer
-**Methods S6.** Details on simulations to estimate the size of bias using standard SIR
-**Figure S7.** Histological groups of LC and SPLC
-**Table S8.** Frequency of same-histology SPLC by region
-**Table S9.** Sensitivity analysis A – Risk of SPLC using unadjusted and histology-specific SIR method [restricted to six German PBCR with low DCO rate]
-**Table S10.** Sensitivity analysis B – Risk of SPLC using unadjusted and histology-specific SIR method [SEER restricted to White population]
-**Figure S11.** Relative risk for SPLC in lung cancer survivors stratified by follow-up time
+**Table S1.** Comparison of IARC/IACR and SEER multiple primary rules **Table S2.** Details of dataset filtering **Table S3.** Details of data modifications **Table S4.** Data quality for included regions and SIR estimates **Table S5.** Conversion table of histology codes into ICD-O-3 histologically ‘different’ groups and histological subtypes of lung cancer **Methods S6.** Details on simulations to estimate the size of bias using standard SIR **Figure S7.** Histological groups of LC and SPLC **Table S8.** Frequency of same-histology SPLC by region **Table S9.** Sensitivity analysis A – Risk of SPLC using unadjusted and histology-specific SIR method \[restricted to six German PBCR with low DCO rate\] **Table S10.** Sensitivity analysis B – Risk of SPLC using unadjusted and histology-specific SIR method \[SEER restricted to White population\] **Figure S11.** Relative risk for SPLC in lung cancer survivors stratified by follow-up time
