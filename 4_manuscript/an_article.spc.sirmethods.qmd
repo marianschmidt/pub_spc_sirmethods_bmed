@@ -49,7 +49,7 @@ editor:
 #----- Set basic parameters
 
 ##---- Files
-here::i_am("4_manuscript/an_article.spc.sircmethods.qmd")
+#here::i_am("4_manuscript/an_article.spc.sircmethods.qmd")
 
 reload_workspace       <- TRUE # if TRUE, the analysis workspace will be
                               # reloaded, if FALSE, then prep chunk eval = FALSE
@@ -528,23 +528,18 @@ The sensitivity analyses, comparing Germany to the White population in SEER, did
 
 #a few tests to make sure nothing has unexpectedly changed
 
-##Case numbers
-##inclusion criteria fulfilled
-#testthat::expect_equal(nrow_d2_all, 263921)
-##main analysis cohort
-#testthat::expect_equal(nrow_d1_s6_srv, 135589)
-# 
-# ##ASIR rates
-# testthat::expect_equal(res_asir_m2002, "63.7")
-# testthat::expect_equal(res_asir_m2013, "50.0")
-# 
-# ##Outcomes
-# testthat::expect_equal(res_n_spc_perc, "3.9")
-# testthat::expect_equal(res_smo_m1_sir, "1.39")
-# testthat::expect_equal(res_2002_t_sir_u, "1.39")
-# 
-# ##Sensitivity
-# testthat::expect_equal(res_pyars_lowdco, "59,639")
+#Case numbers
+#German dataset
+testthat::expect_equal(res_n_lc_t, 135572)
+
+##SPC rates
+testthat::expect_equal(res_ir_spc_m, "1483.0")
+testthat::expect_equal(res_ir_splc_f_us, "991.0")
+
+##Outcomes
+testthat::expect_equal(res_sirsim_1_m, "0.73")
+testthat::expect_equal(res_splc_f_sir2_l, "2.53")
+testthat::expect_equal(res_splc_m_sir4_us, "2.34")
 
 ```
 
