@@ -758,11 +758,11 @@ ZfKD: German Centre for Cancer Registry Data
 
 Marian Eberl: Conceptualization; Methodology; Software; Formal Analysis; Data Curation; Writing -- original draft; Writing -- review and editing; Visualization
 
-Luana F Tanaka: Conceptualization; Methodology; Validation; Resources; Writing -- Original Draft; Writing -- review and editing
+Luana F Tanaka: Conceptualization; Methodology; Validation; Writing -- Original Draft; Writing -- review and editing
 
 Klaus Kraywinkel: Methodology; Validation; Resources; Writing -- review and editing; Supervision
 
-Stefanie J Klug: Conceptualization; Validation; Writing -- review and editing; Supervision
+Stefanie J Klug: Conceptualization; Validation; Resources; Writing -- review and editing; Supervision
 
 ## Data availability statement
 
