@@ -217,7 +217,7 @@ We want to narrow this methodological gap in cancer epidemiology by proposing an
 Therefore, this analysis i) demonstrates how the conventional SIR metric underestimates the risk for SPLC in LC survivors documented in cancer registries that use IARC/IACR MP rules, and ii) proposes a novel method to calculate histology-specific SIRs to reduce bias and presents updated risk estimates for SPLC in Germany.
 Finally, we iii) validate our results by comparing how this new method performs when estimating risk for SPLC in the United States, where multiple primaries are registered following SEER rules.
 
-# Material and methods {#methods}
+# Methods {#methods}
 
 ```{r}
 #| label: methods-values
@@ -717,9 +717,7 @@ knitr::include_graphics(file.path(input_dir_tables, "fig2.png"))
 ::: {#refs}
 :::
 
-# Footnotes
-
-## List of abbreviations
+# List of abbreviations
 
 CI: confidence interval
 
@@ -757,17 +755,21 @@ SPLC: second primary lung cancer
 
 ZfKD: German Centre for Cancer Registry Data
 
-## CRediT authorship contribution statement
+# Declarations
 
-Marian Eberl: Conceptualization; Methodology; Software; Formal Analysis; Data Curation; Writing -- original draft; Writing -- review and editing; Visualization
+## Acknowledgments
 
-Luana F Tanaka: Conceptualization; Methodology; Validation; Writing -- Original Draft; Writing -- review and editing
+We thank Gunther Schauberger (Technical University of Munich) for his review of the Statistical Analysis section and the Methods Supplement.
 
-Klaus Kraywinkel: Methodology; Validation; Resources; Writing -- review and editing; Supervision
+## Consent for Publication
 
-Stefanie J Klug: Conceptualization; Validation; Resources; Writing -- review and editing; Supervision
+Not applicable.
 
-## Data availability statement
+## Funding
+
+This research received no specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
+
+## Availability of Data and Materials
 
 Due to legal restrictions, the individual-level raw data used for this analysis (i.e., German cancer registry data) is only available via request to the German Centre for Cancer Registry Data (ZfKD), which can provide a scientific use file.
 More information on the application process is provided on the ZfKD website (<https://www.krebsdaten.de/Krebs/EN/Content/ScientificUseFile/scientificusefile_node.html>).
@@ -782,28 +784,28 @@ Repository for analysis code: <https://github.com/marianschmidt/pub_spc_sirmetho
 
 Repository for software code: <https://doi.org/10.5281/zenodo.5055870>
 
-## Funding
 
-This research received no specific grant from funding agencies in the public, commercial, or not-for-profit sectors.
+## Authors' Contributions
+
+ME, LFT and SJK conceptualized the study. ME LFT and KK developed the Methodology. ME programmed the software, conducted the formal analysis, curated the data and created the visualizations. LFT, KK and SJK validated the analysis. KK and SJK provided the resources for this study and provided supervision. ME wrote the original draft. All authors reviewed and edited the manuscript. 
+
+All authors read and approved the final manuscript.
 
 ## Competing interests
 
-The authors declare that they have no competing interests.
+ME is employed by Daiichi Sankyo Europe GmbH since July 2023, after the completion of the study.
 
-## Ethics approval and consent to participate
+All other authors declare that they have no competing interests.
+
+
+## Ethics Approval and Consent to Participate
 
 This study analyzed the scientific use file (SUF) of the German Centre for Cancer Registry Data (ZfKD).
 Data collection is mandated and regulated by the German Federal Law on Cancer Registration (BKRG), and secondary data analysis of the anonymous SUF -- as used in this study -- does not require ethics approval or consent by patients (§3 and §5 BKRG).
 
 The validation dataset (i.e., U.S. cancer registry data) is publicly available and de-identified and thus does not require ethics approval in accordance with local laws.
 
-## Consent to publish
 
-Not applicable.
-
-## Acknowledgments
-
-We thank Gunther Schauberger (Technical University of Munich) for his review of the Statistical Analysis section and the Methods Supplement.
 
 # Supplementary information
 
