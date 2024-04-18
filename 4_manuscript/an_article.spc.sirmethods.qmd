@@ -787,7 +787,7 @@ Repository for software code: <https://doi.org/10.5281/zenodo.5055870>
 
 ## Authors' Contributions
 
-ME, LFT and SJK conceptualized the study. ME LFT and KK developed the Methodology. ME programmed the software, conducted the formal analysis, curated the data and created the visualizations. LFT, KK and SJK validated the analysis. KK and SJK provided the resources for this study and provided supervision. ME wrote the original draft. All authors reviewed and edited the manuscript. 
+ME, LFT and SJK conceptualized the study. ME, LFT and KK developed the methodology. ME programmed the software, conducted the formal analysis, curated the data and created the visualizations. LFT, KK and SJK validated the analysis. KK and SJK provided the resources for this study and provided supervision. ME wrote the original draft. All authors reviewed and edited the manuscript. 
 
 All authors read and approved the final manuscript.
 
