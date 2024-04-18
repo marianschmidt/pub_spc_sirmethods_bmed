@@ -294,7 +294,7 @@ Furthermore, we compared results from the German analysis dataset to SEER data f
 
 ## Software used
 
-All analyses were conducted in R version 4.3.1 [@rcoreteamLanguageEnvironmentStatistical2020] with data management using the *tidyverse* and *tidytable* packages [@wickhamWelcomeTidyverse2019; @fairbanksTidytableTidyInterface2020].
+All analyses were conducted in R version 4.3.2 [@rcoreteamLanguageEnvironmentStatistical2023] with data management using the *tidyverse* and *tidytable* packages [@wickhamWelcomeTidyverse2019; @fairbanksTidytableTidyInterface2020].
 Figures were created with *ggplot2* [@wickhamGgplot2ElegantGraphics2016] and tables with *gt* [@iannoneGtEasilyCreate2020].
 The routines to calculate reference rates and stratified SIRs are publicly available in the R package *msSPChelpR* [@eberlMsSPChelpRHelperFunctions2022], and all scripts to create our analyses are published online [@eberl2023].
 
@@ -454,7 +454,7 @@ A risk increase was observed for all histological subtypes except for large-cell
 In contrast, the unadjusted SIR resulted in a 15% lower risk than in the male population (SIR1~raw~ = `r res_splc_m_sir1`, 95% CI: `r res_splc_m_sir1_l`--`r res_splc_m_sir1_u`).
 For female LC survivors, the new method further increased risk estimates, particularly for adenocarcinoma (SIR2~sub~ = `r res_splc_ac_f_sir2`, 95% CI: `r res_splc_ac_f_sir2_l`--`r res_splc_ac_f_sir2_u` vs. SIR1~raw~ = `r res_splc_ac_f_sir1`, 95% CI: `r res_splc_ac_f_sir1_l`--`r res_splc_ac_f_sir1_u`).
 When stratifying the analysis by time since LC diagnosis, the SIR2~sub~ increased with more prolonged survival for both sexes \[Additional File 1: Fig.
-S11\].
+S9\].
 
 ```{r}
 #| label: res-sens-pt1
@@ -468,7 +468,7 @@ res_sensa_sir2_m <- sensa_tab3 %>% filter(break_value == "Total - All lung cance
 ```
 
 In the sensitivity analysis based on `r res_sensa_pyars` person-years at risk from German PBCRs with low DCO rates, `r res_sensa_n_splc` SPLC occurred (`r res_sensa_n_splc_perc` of the initial analysis dataset).
-Both SIR1~raw~ and SIR2~sub~ were considerably lower than in the main analysis (SIR2~sub~ = `r res_sensa_sir2_f` in females, SIR2~sub~ = `r res_sensa_sir2_m` in males), but the overall pattern of substantial risk estimate increase using SIR2~sub~ remained \[Additional File 1: Table S9\].
+Both SIR1~raw~ and SIR2~sub~ were considerably lower than in the main analysis (SIR2~sub~ = `r res_sensa_sir2_f` in females, SIR2~sub~ = `r res_sensa_sir2_m` in males), but the overall pattern of substantial risk estimate increase using SIR2~sub~ remained \[Additional File 1: Table S10\].
 
 ## iii) Validation analysis using SEER data
 
@@ -522,7 +522,7 @@ For some subgroups with a small number of observed cases in the German data, suc
 
 ```
 
-The sensitivity analyses, comparing Germany to the White population in SEER, did not alter the results, showing that previous stratification of SIR by race adequately accounts for risk differences between races \[Additional File 1: Table S10\].
+The sensitivity analyses, comparing Germany to the White population in SEER, did not alter the results, showing that previous stratification of SIR by race adequately accounts for risk differences between races \[Additional File 1: Table S11\].
 
 ```{r}
 #| label: res-test
@@ -823,6 +823,6 @@ The validation dataset (i.e., U.S. cancer registry data) is publicly available a
 **Section S6.** Details on simulations to estimate the size of bias using standard SIR.
 **Fig. S7.** Histological groups of LC and SPLC.
 **Table S8.** Frequency of same-histology SPLC by region.
-**Table S9.** Sensitivity analysis A – Risk of SPLC using unadjusted and histology-specific SIR method \[restricted to six German PBCR with low DCO rate\].
-**Table S10.** Sensitivity analysis B – Risk of SPLC using unadjusted and histology-specific SIR method \[SEER restricted to White population\].
-**Fig. S11.** Relative risk for SPLC in lung cancer survivors stratified by follow-up time.
+**Fig. S9.** Relative risk for SPLC in lung cancer survivors stratified by follow-up time.
+**Table S10.** Sensitivity analysis A – Risk of SPLC using unadjusted and histology-specific SIR method \[restricted to six German PBCR with low DCO rate\].
+**Table S11.** Sensitivity analysis B – Risk of SPLC using unadjusted and histology-specific SIR method \[SEER restricted to White population\].
