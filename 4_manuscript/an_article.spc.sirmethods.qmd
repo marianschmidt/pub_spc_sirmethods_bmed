@@ -784,10 +784,15 @@ Repository for analysis code: <https://github.com/marianschmidt/pub_spc_sirmetho
 
 Repository for software code: <https://doi.org/10.5281/zenodo.5055870>
 
-
 ## Authors' Contributions
 
-ME, LFT and SJK conceptualized the study. ME, LFT and KK developed the methodology. ME programmed the software, conducted the formal analysis, curated the data and created the visualizations. LFT, KK and SJK validated the analysis. KK and SJK provided the resources for this study and provided supervision. ME wrote the original draft. All authors reviewed and edited the manuscript. 
+ME, LFT and SJK conceptualized the study.
+ME, LFT and KK developed the methodology.
+ME programmed the software, conducted the formal analysis, curated the data and created the visualizations.
+LFT, KK and SJK validated the analysis.
+KK and SJK provided the resources for this study and provided supervision.
+ME wrote the original draft.
+All authors reviewed and edited the manuscript.
 
 All authors read and approved the final manuscript.
 
@@ -797,15 +802,12 @@ ME is employed by Daiichi Sankyo Europe GmbH since July 2023, after the completi
 
 All other authors declare that they have no competing interests.
 
-
 ## Ethics Approval and Consent to Participate
 
 This study analyzed the scientific use file (SUF) of the German Centre for Cancer Registry Data (ZfKD).
 Data collection is mandated and regulated by the German Federal Law on Cancer Registration (BKRG), and secondary data analysis of the anonymous SUF -- as used in this study -- does not require ethics approval or consent by patients (§3 and §5 BKRG).
 
 The validation dataset (i.e., U.S. cancer registry data) is publicly available and de-identified and thus does not require ethics approval in accordance with local laws.
-
-
 
 # Supplementary information
 
