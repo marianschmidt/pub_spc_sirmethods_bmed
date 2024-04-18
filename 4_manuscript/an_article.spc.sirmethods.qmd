@@ -468,7 +468,7 @@ res_sensa_sir2_m <- sensa_tab3 %>% filter(break_value == "Total - All lung cance
 ```
 
 In the sensitivity analysis based on `r res_sensa_pyars` person-years at risk from German PBCRs with low DCO rates, `r res_sensa_n_splc` SPLC occurred (`r res_sensa_n_splc_perc` of the initial analysis dataset).
-Both SIR1~raw~ and SIR2~sub~ were considerably lower than in the main analysis (SIR2~sub~ = `r res_sensa_sir2_f` in females, SIR2~sub~ = `r res_sensa_sir2_m` in males), but the overall pattern of substantial risk estimate increase using SIR2~sub~ remained \[Supplement S9\].
+Both SIR1~raw~ and SIR2~sub~ were considerably lower than in the main analysis (SIR2~sub~ = `r res_sensa_sir2_f` in females, SIR2~sub~ = `r res_sensa_sir2_m` in males), but the overall pattern of substantial risk estimate increase using SIR2~sub~ remained \[Additional File 1: Table S9\].
 
 ## iii) Validation analysis using SEER data
 
