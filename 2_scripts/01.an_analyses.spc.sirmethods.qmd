@@ -5925,41 +5925,6 @@ res_hist_freq <- d1_lung_wide %>%
 ```
 
 
-### ggblanket - Germany vs. US
-
-```{r}
-
-supp_fig_hist <- res_hist_freq %>%
-  # one way to order values on axis
-  ggblanket::gg_col(
-    x = freq,
-    y = group,
-    col = t_histgroupiarc,
-    facet = p_sex.1,
-    facet2 = reg.1,
-    col_title = "",
-    position = "stack",
-    pal =  cols4all::c4a("brewer.BrBG", 7),
-    x_title = "",
-    y_title = "",
-    title = "Histological groups of LC and SPLC",
-    subtitle = "Groups of malignant neoplasms considered to be histologically ‘different’ for the purpose of defining multiple tumors (IARC/IACR definition, ICD-O-3 first revision)") +
-  geom_text(aes(x = pos, y = group, label = perc), 
-            size = 3, color = "black")
-
-#print figure
-supp_fig_hist
-
-#save figure
-supp_fig_hist %>%
-  ggsave(filename = file.path(output_dir_tables, "supp_fig_hist.png"),
-         width = 12, height = 6)
-
-supp_fig_hist %>%
-  ggsave(filename = file.path(output_dir_tables, "supp_fig_hist.tiff"),
-         width = 12, height = 6, units = "in")
-
-```
 
 
 
@@ -6600,10 +6565,42 @@ $$SIR_{simIARC} = \frac{\sum_{j=1}^{J}\sum_{i=1}^{I} SIR_{real}* pyears_{ij}*IR_
 Additionally to the scenario of no risk difference ($SIR_{real} = 1.0$), we also simulate a true doubling of SPLC risk for LC survivors ($SIR_{real} = 2.0$) and a risk increase comparable to data of U.S. lung cancer survivors for males ($SIR_{real} = 3.38$) and females ($SIR_{real} = 4.85$) published by Thakur et al. [@thakurRiskSecondLung2018].
 
 
-### S7. Table: Frequency of t_sublung and t_histgroupiarc in SEER and ZfKD
+### S7. Figure: Frequency of t_sublung and t_histgroupiarc in SEER and ZfKD
+
+#### ggblanket - Germany vs. US
 
 ```{r}
+
+supp_fig_hist <- res_hist_freq %>%
+  # one way to order values on axis
+  ggblanket::gg_col(
+    x = freq,
+    y = group,
+    col = t_histgroupiarc,
+    facet = p_sex.1,
+    facet2 = reg.1,
+    col_title = "",
+    position = "stack",
+    pal =  cols4all::c4a("brewer.BrBG", 7),
+    x_title = "",
+    y_title = "",
+    title = "Fig. S7: Histological groups of LC and SPLC",
+    subtitle = "Groups of malignant neoplasms considered to be histologically ‘different’ for the purpose of defining multiple tumors (IARC/IACR definition, ICD-O-3 first revision)") +
+  geom_text(aes(x = pos, y = group, label = perc), 
+            size = 3, color = "black")
+
+#print figure
 supp_fig_hist
+
+#save figure
+supp_fig_hist %>%
+  ggsave(filename = file.path(output_dir_tables, "supp_fig_hist.png"),
+         width = 12, height = 6)
+
+supp_fig_hist %>%
+  ggsave(filename = file.path(output_dir_tables, "supp_fig_hist.tiff"),
+         width = 12, height = 6, units = "in")
+
 ```
 
 ### S8. Table: Frequence of same histology SPLC 
@@ -6695,7 +6692,7 @@ supp_tab_samehist_gt
   
 ```
 
-### S11. Figure: SIR1 vs. SIR2 by Follow-up time
+### S9. Figure: SIR1 vs. SIR2 by Follow-up time
 
 - use figure 1 code from 2021 publication
 
@@ -6769,7 +6766,7 @@ AACC
 BBDD
 "
 
-supp_fig_byfutime_title <- rlang::englue('Figure S9: Relative risk for SPLC in lung cancer survivors stratified by follow-up time (n={format(nrow(d1_lung_wide), big.mark = ",")}).')
+supp_fig_byfutime_title <- rlang::englue('Fig. S9: Relative risk for SPLC in lung cancer survivors stratified by follow-up time (n={format(nrow(d1_lung_wide), big.mark = ",")}).')
 supp_fig_byfutime_subtitle <- rlang::englue("SIRs stratified by sex on the log-transformed y axis (for females in yellow and for males in blue) and stratified by follow-up time on the x axis. <br>
                                             Top row shows values for unadjusted estimation of risk for SPLC after LC using general reference rates (SIR1~raw~). <br>
                                             Bottom row shows SIR using subtype-specific reference rates excluding same-histology group (SIR2~sub~).")
@@ -6786,7 +6783,7 @@ supp_fig_byfutime <- wrap_plots(
     #Label Title and Caption
   plot_annotation(
     title = supp_fig_byfutime_title,
-        #title = element_text(paste0("Figure S11: Incidence of SPLC  (n=", format(nrow(d1_lung_wide), big.mark = ","), ")")),
+        #title = element_text(paste0("Fig. S9: Incidence of SPLC  (n=", format(nrow(d1_lung_wide), big.mark = ","), ")")),
     subtitle = supp_fig_byfutime_subtitle,
         #subtitle = element_text("SIRs stratified by sex on the log-transformed y axis (for males in green and for females in yellow) and stratified by follow-up time on the x axis. Top row shows values for unadjusted "), #alternative str_glue, but this doesn't work with format(big.mark = ",")
     caption = supp_fig_byfutime_caption,
@@ -6868,7 +6865,7 @@ sensa_tab3 <- sensa_tab3_pt1 %>%
   bind_cols({tab3 %>% select(seer.sir1_raw.sir, seer.sir2_sub.sir, seer.sir2_sub.sir_lci, seer.sir2_sub.sir_uci)})
 ```
 
-#### Tab9: gt
+#### Tab10: gt
 
 ```{r}
 sensa_tab3_title <- md("S10. Table: Sensitivity analysis A – Risk for SPLC using unadjusted and histology-specific SIR method<br>[restricted to six German PBCR with low DCO rate]")
@@ -7153,7 +7150,7 @@ sensb_tab3 <- sensb_tab3_pt1 %>%
 ```
 
 
-#### Tab10: gt
+#### Tab11: gt
 
 
 ```{r}
