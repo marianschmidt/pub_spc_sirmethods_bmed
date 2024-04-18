@@ -704,7 +704,7 @@ if(knitr::pandoc_to("docx")){
 ```{r}
 #| label: fig-sircomp
 #| echo: false
-#| fig-cap: 'Sex-specific relative risk for SPLC in German lung cancer survivors'
+#| fig-cap: '**Sex-specific relative risk for SPLC in German lung cancer survivors.** Estimation of risk for SPLC after LC using general reference rates (SIR1~raw~) shown in green and subtype-specific reference rates excluding same-histology group (SIR2~sub~) shown in purple. SIR estimates are presented stratified by histologic subtype (using the WHO classfication of thoracic tumors) as well as a total over all histologies. Within each facet SIR for females is shown on the left and for males on the right with the length of the line indicating the respective 95% CI. Observed and expected counts below in grey belong to the conventional method (SIR1~raw~) and those highlighted in purple yield the newly proposed risk estimate (SIR2~sub~).'
 #| fig-cap-location: bottom
 #| fig-height: 6
 #| fig-width: 9
