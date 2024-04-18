@@ -5976,7 +5976,7 @@ supp_tab_def_gt <- supp_tab_def %>%
   gt::gt()  %>%
   #make header
   gt::tab_header(
-    title = "Supplement Table S1: Comparison of IARC/IACR and SEER multiple primary rules",
+    title = "Table S1: Comparison of IARC/IACR and SEER multiple primary rules",
     subtitle = "") %>%
   #rename columns
     gt::cols_label(
