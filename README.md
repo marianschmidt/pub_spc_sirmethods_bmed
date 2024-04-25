@@ -42,4 +42,4 @@ Repository for software code: https://doi.org/10.5281/zenodo.5055870
 ## Code archive
 
 This repository is available via a permanent identifier.
-[![DOI](https://zenodo.org/badge/398055956.svg)](https://zenodo.org/badge/latestdoi/398055956)
+[![DOI](https://zenodo.org/badge/765910283.svg)](https://zenodo.org/doi/10.5281/zenodo.11068786)
