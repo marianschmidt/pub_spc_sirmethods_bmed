@@ -5,7 +5,7 @@ This repository includes the analysis code for paper 'Histology-specific standar
 
 ## Publication
 
-The final publication can be accessed via the publisher’s website https://doi.org/WIP.
+The final publication can be accessed via the publisher’s website https://doi.org/10.1186/s12916-024-03398-9.
 
 
 ## Structure of the repository
@@ -36,6 +36,7 @@ The validation data set (i.e., U.S. cancer registry data) is publicly available 
 The authors of this paper strongly support open science and have therefore published both the analysis code and the newly programmed software to review and download under a GPL-3 license. The respective references are provided in the manuscript.
 
 Repository for analysis code: https://github.com/marianschmidt/pub_spc_sirmethods_bmed
+
 Repository for software code: https://doi.org/10.5281/zenodo.5055870
 
 
