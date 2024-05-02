@@ -1,5 +1,5 @@
 ---
-title: "Supplementary Material for the paper 'Improving the Risk Estimation for Second Primary Lung Cancer after Lung Cancer by Taking Tumor Histology into Account'"
+title: "Additional File 1 – Supplement S1-S11"
 date: last-modified
 date-format: DD MMMM YYYY
 title-block-banner: true
@@ -114,7 +114,7 @@ c4a("wes.zissou1", 11)
 dic_tumor      <- if(en_gb){"tumour"}else{"tumor"}
 ```
 
-# Online Reource - Supplement S1-S12 {#supp}
+# Additional File 1 - Supplement S1-S11 {#supp}
 
 Supplementary information for the paper 
 
@@ -125,7 +125,7 @@ Authors: Eberl M, Tanaka LF, Kraywinkel K, Klug SJ
 Correspondence: Marian Eberl, marian.eberl@tum.de, Chair of Epidemiology, TUM School of Medicine and Health, Technical University of Munich, Munich, Germany
 
 
-## S1. Table: Comparison of IARC/IACR and SEER multiple primary rules {#supp-def}
+## Table S1: Comparison of IARC/IACR and SEER multiple primary rules {#supp-def}
 
 
 ```{r}
@@ -133,8 +133,6 @@ Correspondence: Marian Eberl, marian.eberl@tum.de, Chair of Epidemiology, TUM Sc
 #| warning: false
 
 if(knitr::pandoc_to("docx")){
-  
-  supp_tab_def$`_heading`$subtitle
   
   knitr::include_graphics(file.path(input_dir_tables, "supp_tab_def.png"))
   
@@ -147,3 +145,190 @@ if(knitr::pandoc_to("docx")){
 ```
 
 
+## Table S2: Details of dataset filtering {#supp-filter}
+
+
+```{r}
+#| label: tab-supp_filter
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(input_dir_tables, "supp_tab_filter.png"))
+  
+}else{
+   
+  #print table
+  supp_tab_filter_gt
+  
+}
+```
+
+## Table S3: Details of data modifications {#supp-dm}
+
+
+```{r}
+#| label: tab-supp_dm
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(input_dir_tables, "supp_tab_dm.png"))
+  
+}else{
+   
+  #print table
+  supp_tab_dm_gt
+  
+}
+```
+
+
+## Table S4: Data quality for included regions and SIR estimates {#supp-qual}
+
+
+```{r}
+#| label: tab-supp_qual
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(input_dir_tables, "supp_tab_qual.png"))
+  
+}else{
+   
+  #print table
+  supp_tab_qual_gt
+  
+}
+```
+
+## Table S5: Conversion table of histology codes into ICD-O-3 histologically ‘different’ groups and histological subtypes of lung cancer {#supp-subtypes}
+
+
+```{r}
+#| label: tab-supp_subtypes
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(input_dir_tables, "supp_tab_subtypes_def.png"))
+  
+}else{
+   
+  #print table
+  supp_tab_subtypes_def_gt
+  
+}
+```
+
+## Section S6: Details on simulations to estimate the size of bias using standard SIR 
+
+To estimate the size of bias introduced by using general population reference rates for calculating SIR of same-site SPC when IARC/IACR MP rules are applied, we simulate various scenarios.
+First, we assume that the baseline risk of LC survivors to develop an SPLC is the same as for the general population (real SIR = 1.0).
+We determined the proportions of histologically different LC groups ${p_{hist}}_j$ in the analysis dataset for all index LC cases aged 30 to 99 years and excluded death certificate only (DCO) diagnoses.
+Then we assumed that the SPLC would have the same histology group distribution as for the first cancer.
+We expect the true SIR to be the fraction of observed and expected cases.
+In the case of the no risk difference between LC survivors and the general population $SIR_{real}$, the count of observed cases $count_i$ equals the number of expected cases (as the product of person-years at risk $pyears_i$ and general population reference rates $IR_i$) for each specific stratum $i$.
+We always stratified SIR in our analyses by age, sex, region, and period using stratum-specific reference rates for the general population.
+
+$$SIR = \frac{O}{E} = \frac{\sum_{i=1}^{I}O_i}{\sum_{i=1}^{I}E_i} = \frac{\sum_{i=1}^{I}count_i}{\sum_{i=1}^{I}pyars_i*IR_i}$$ $$SIR_{real}(1.0) = \frac{\sum_{i=1}^{I}1 * E_i}{\sum_{i=1}^{I}E_i}$$
+
+Then we take into account that there is a correction factor $x_{hist}$ for combinations of LC and SPLC that are not possible in our observed cases according to IARC/IACR MP rules.
+If we assume that the SPLC would have the same histology group distribution as for the first cancer and any histology group A can only be followed by a histology group, not A, then the correction factor is $1-{p_{hist}}_A$.
+This gives for the simulated SIR under IARC/IACR rules:
+
+$$SIR_{simIARC}(SIR_{real}=1.0) = \frac{O}{E} = \frac{\sum_{j=1}^{J}\sum_{i=1}^{I} 1* E_{ij}*{x_{hist}}_{j}}{\sum_{j=1}^{J}\sum_{i=1}^{I}E_{ij}}$$
+
+Whereby
+
+$${x_{hist}}_{j} = 1-{p_{hist}}_j$$ 
+
+The factor ${x_{hist}}_j$ is sex- and histology-specific, but the same for all age-groups and regions.
+
+Generalized for any given $SIR_{real}$, the simulation would give
+
+$$SIR_{simIARC} = \frac{\sum_{j=1}^{J}\sum_{i=1}^{I} SIR_{real}* pyears_{ij}*IR_{ij}*{x_{hist}}_{j}}{\sum_{j=1}^{J}\sum_{i=1}^{I}pyears_{ij}*IR_{ij}}$$
+
+Additionally to the scenario of no risk difference ($SIR_{real} = 1.0$), we also simulate a true doubling of SPLC risk for LC survivors ($SIR_{real} = 2.0$) and a risk increase comparable to data of U.S. lung cancer survivors for males ($SIR_{real} = 3.38$) and females ($SIR_{real} = 4.85$) published by Thakur et al. [@thakurRiskSecondLung2018].
+
+
+## Figure S7: Histological groups of LC and SPLC
+
+
+```{r}
+#| label: fig-supp_hist
+#| warning: false
+
+knitr::include_graphics(file.path(input_dir_tables, "supp_fig_hist.png"))
+
+```
+
+## Table S8: Frequency of same-histology SPLC by region {#supp-samehist}
+
+
+```{r}
+#| label: tab-supp_samehist
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(input_dir_tables, "supp_tab_samehist.png"))
+  
+}else{
+   
+  #print table
+  supp_tab_samehist_gt
+  
+}
+```
+
+
+## Figure S9: Relative risk for SPLC in lung cancer survivors stratified by follow-up time
+
+
+```{r}
+#| label: fig-supp_byfutime
+#| warning: false
+
+knitr::include_graphics(file.path(input_dir_tables, "supp_fig_byfutime.png"))
+  
+```
+
+## Table S10: Sensitivity analysis A – Risk of SPLC using unadjusted and histology-specific SIR method [restricted to six German PBCR with low DCO rate] {#supp-sensa}
+
+
+```{r}
+#| label: tab-supp_sensa
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(input_dir_tables, "supp_tab_sensa.png"))
+  
+}else{
+   
+  #print table
+  supp_tab_sensa_gt
+  
+}
+```
+
+## Table S11: Sensitivity analysis B – Risk of SPLC using unadjusted and histology-specific SIR method [SEER restricted to White population] {#supp-sensb}
+
+
+```{r}
+#| label: tab-supp_sensb
+#| warning: false
+
+if(knitr::pandoc_to("docx")){
+  
+  knitr::include_graphics(file.path(input_dir_tables, "supp_tab_sensb.png"))
+  
+}else{
+   
+  #print table
+  supp_tab_sensb_gt
+  
+}
+```
